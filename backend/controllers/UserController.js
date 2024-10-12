@@ -7,13 +7,33 @@ const MIN_PASS_LENGTH = 6;
 
 class UserController {
     static async postNew(req, res) {
-        const { email, password } = req.body;
+        const { 
+            email, password, username,
+            role, fullName,
+            gradeLevel, schoolName, subjectExpertise,
+            phoneNumber, yearsOfExperience, dateOfBirth,
+            guardianContact } = req.body;
 
         if(!email || !emailRegex.test(email)) {
             return res.status(400).json({error: 'Invalid email'});
         }
         if(!password || password.length < MIN_PASS_LENGTH) {
             return res.status(400).json({ error: `Password should be at least ${MIN_PASSWORD_LENGTH} characters long` });
+        }
+        if (!username) {
+            return res.status(400).json({ error: 'Username is required' });
+        }
+        if (!role || role !== 'student' && role !== 'teacher') {
+            return res.status(400).json({ error: 'Role must be either "studend" or "teacher"' });
+        }
+        if (role === 'teacher') {
+            if (!fullName || !subjectExpertise || !school) {
+                return res.status(400).json({ error: 'Full name, subject expertise, and school are required' });
+            }
+        } else if (role === 'student') {
+            if (!fullName || !gradeLevel || !school) {
+                return res.status(400).json({ error: 'Full name, grade level(class), and school are required' });
+            }
         }
         try {
             const db = dbClient.client.db();
@@ -24,8 +44,26 @@ class UserController {
             const saltRounds = 10;
             const hashedPass = await bcrypt.hash(password, saltRounds);
 
-            const result = await db.collection('users').insertOne({ email, password: hashedPass });
-            return res.status(201).json({ id: result.insertedId, email });
+            const userData = {
+                email,
+                password: hashedPass,
+                username,
+                fullName,
+                role,
+                schoolName,
+            };
+            if (role === 'student') {
+                userData.gradeLevel = gradeLevel;
+                userData.dateOfBirth = dateOfBirth;
+                userData.guardianContact = guardianContact;
+            } else if (role === 'teacher') {
+                userData.subjectExpertise = subjectExpertise;
+                userData.phoneNumber = phoneNumber;
+                userData.yearsOfExperience = yearsOfExperience;
+            }
+
+            const result = await db.collection('users').insertOne({ userData });
+            return res.status(201).json({ id: result.insertedId, email, role });
         } catch (error) {
             console.error('Error creating new user:', error);
             return res.status(500).json({ error: 'Internal Server Rrror'});
@@ -49,13 +87,24 @@ class UserController {
             return res.status(401).json({ error: 'Unauthorised' });
         }
 
-        return res.status(200).json({ id: user._id, email: user.email });
+        return res.status(200).json({
+            id: user._id,
+            email: user.email,
+            username: user.username,
+            role: user.role,
+            fullName: user.fullName,
+            schoolName: user.schoolName,
+            ...(user.role === 'teacher' && { subjectExpertise: user.subjectExpertise }),
+            ...(user.role === 'student' && { gradeLevel: user.gradeLevel, dateOfBirth: user.dateOfBirth }),
+        });
     }
 
 
     static async updateProfile(req, res) {
         const token = req.headers['x-token'];
-        const { email, password } = req.body;
+        const { email, password, username, fullName,
+            gradeLevel, schoolName, phoneNumber, subjectExpertise,
+            yearsOfExperience, guardianContact } = req.body;
 
         if (!token) {
             return res.status(401).json({ error: 'Unauthorised' });
@@ -69,6 +118,14 @@ class UserController {
         const updateData = {};
         if (email) updateData.email = email;
         if (password) updateData.password = await bcrypt.hash(password, 10);
+        if (username) updateData.username = username;
+        if (fullName) updateData.fullName = fullName;
+        if (gradeLevel) updateData.gradeLevel = gradeLevel;
+        if (schoolName) updateData.schoolName = schoolName;
+        if (phoneNumber) updateData.phoneNumber = phoneNumber;
+        if (subjectExpertise) updateData.subjectExpertise = subjectExpertise;
+        if (yearsOfExperience) updateData.yearsOfExperience = yearsOfExperience;
+        if (guardianContact) updateData.guardianContact = guardianContact;
 
         try {
             await db.collection('users').updateOne({ _id: new ObjectId(userId) }, {$set: updateData });

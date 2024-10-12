@@ -8,7 +8,7 @@ const QuizController = require('../controllers/QuizController')
 const { userValidator, validateUser } = require('../validators/userValidator');
 const { uploadValidator, validateUpload } = require('../validators/uploadValidator');
 const { profileValidator, validateProfile } = require('../validators/profileValidator');
-
+const { checkRole } = require('../middleware/rbac');
 
 const upload = multer({ dest: 'uploads/' });
 
@@ -23,11 +23,18 @@ router.get('/connect', AuthController.getConnect);
 router.get('/disconnect', AuthController.getDisconnect);
 router.get('/users/me', UserController.getMe);
 router.put('/users/me', profileValidator, validateProfile, UserController.updateProfile);
-
+router.delete('/users/me', checkRole('admin'), UserController.deleteAccount);
 
 //Quiz management routes
 router.get('quizzes/:subjectId', QuizController.getQuizBySubject);
 router.post('/results', QuizController.saveResult);
-router.post('quizzes/upload', upload.single('file'), uploadValidator, validateUpload, QuizController.uploadQuizFile);
+router.post(
+    'quizzes/upload',
+    upload.single('file'),
+    uploadValidator,
+    validateUpload,
+    checkRole('teacher'),
+    QuizController.uploadQuizFile
+);
 
 module.exports = router;
