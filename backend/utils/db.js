@@ -7,7 +7,11 @@ class DBClient {
         const database = process.env.DB_DATABASE || 'backend';
 
         this.uri = `mongodb://${host}:${port}/${database}`;
-        this.client = new MongoClient(this.uri, {useNewUrlParser: true, useUnifiedTopology: true});
+        this.client = new MongoClient(this.uri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            retryWrites: true
+        });
 
         this.connected = false;
         this.client.connect()
@@ -28,18 +32,26 @@ class DBClient {
         if(!this.isAlive()) {
             throw new Error('Client not connect');
         }
-        const db = this.client.db();
-        const allUsers = await db.collection('users').countDocuments();
-        return allUsers;
+        try {
+            const db = this.client.db();
+            const allUsers = await db.collection('users').countDocuments();
+            return allUsers;
+        } catch(error) {
+            console.error('Error counting users:', error);
+        }
     }
 
-    async numFiles() {
+    async numQuizzes() {
         if(!this.isAlive()) {
             throw new Error('Client not connected')
         }
-        const db = this.client.db();
-        const files = await db.collection('files').countDocuments();
-        return files;
+        try {
+            const db = this.client.db();
+            const quizzes = await db.collection('quizzes').countDocuments();
+            return quizzes;
+        } catch(error) {
+            console.error('Error counting quizzes:', error);
+        }
     }
 
 }
