@@ -1,0 +1,51 @@
+.role-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+    font-family: Arial, sans-serif;
+  }
+  
+  
+
+  .role-selection h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+  }
+  
+  .role-cards {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
+  
+  .role-card {
+    width: 250px;
+    height: 200px;
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .role-card h3 {
+    font-size: 1.75rem;
+    margin-bottom: 10px;
+  }
+  
+  .role-card p {
+    font-size: 1rem;
+  }
+  
+  .student-card:hover {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .teacher-card:hover {
+    background-color: #ff5722;
+    color: white;
+  }
+  
