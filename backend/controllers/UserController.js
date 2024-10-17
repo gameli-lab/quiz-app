@@ -135,6 +135,72 @@ class UserController {
             return res.status(500).json({ error: 'Internal server error'});
         }
     }
+
+    static async getAllUsers(req, res) {
+        const db = dbClient.client.db();
+        const { role, status } = req.query; // Optionally filter by role or status
+    
+        const query = {};
+        if (role) query.role = role;
+        if (status) query.status = status;
+    
+        try {
+            const users = await db.collection('users').find(query).toArray();
+            return res.status(200).json(users);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    static async updateUserRole(req, res) {
+        const { id } = req.params;
+        const { role } = req.body;
+    
+        if (!['student', 'teacher', 'admin'].includes(role)) {
+            return res.status(400).json({ error: 'Invalid role' });
+        }
+    
+        try {
+            const db = dbClient.client.db();
+            const user = await db.collection('users').findOneAndUpdate(
+                { _id: new ObjectId(id) },
+                { $set: { role } },
+                { returnDocument: 'after' }
+            );
+            if (!user.value) return res.status(404).json({ error: 'User not found' });
+    
+            return res.status(200).json({ message: 'Role updated successfully', user: user.value });
+        } catch (error) {
+            console.error('Error updating user role:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    static async updateUserStatus(req, res) {
+        const { id } = req.params;
+        const { status } = req.body;
+    
+        if (!['active', 'inactive'].includes(status)) {
+            return res.status(400).json({ error: 'Invalid status' });
+        }
+    
+        try {
+            const db = dbClient.client.db();
+            const user = await db.collection('users').findOneAndUpdate(
+                { _id: new ObjectId(id) },
+                { $set: { status } },
+                { returnDocument: 'after' }
+            );
+            if (!user.value) return res.status(404).json({ error: 'User not found' });
+    
+            return res.status(200).json({ message: 'User status updated successfully', user: user.value });
+        } catch (error) {
+            console.error('Error updating user status:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+    
     static async deleteAccount(req, res) {
         const token = req.headers['x-token'];
         if (!token) {
@@ -148,7 +214,10 @@ class UserController {
         }
         const db = dbClient.client.db();
         try {
-            await db.collection('users').deleteOne({ _id: new ObjectId(userId) });
+            result = await db.collection('users').deleteOne({ _id: new ObjectId(userId) });
+            if (result.deletedCount === 0) {
+                return res.status(404).json({ error: 'User not found' });
+            }
             await redisclient.del(key);
             return res.status(204).send();
         } catch(error) {

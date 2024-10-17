@@ -23,7 +23,11 @@ router.get('/connect', AuthController.getConnect);
 router.get('/disconnect', AuthController.getDisconnect);
 router.get('/users/me', UserController.getMe);
 router.put('/users/me', profileValidator, validateProfile, UserController.updateProfile);
-router.delete('/users/me', checkRole('admin'), UserController.deleteAccount);
+router.delete('/users/:id', checkRole('admin'), UserController.deleteAccount);
+router.get('/users', checkRole('admin'), UserController.getAllUsers);         // View all users
+router.put('/users/:id/role', checkRole('admin'), UserController.updateUserRole);  // Update user role
+router.put('/users/:id/status', checkRole('admin'), UserController.updateUserStatus); // Activate/deactivate user account
+
 
 //Quiz management routes
 router.get('quizzes/:subjectId', QuizController.getQuizBySubject);
@@ -33,8 +37,15 @@ router.post(
     upload.single('file'),
     uploadValidator,
     validateUpload,
-    checkRole('teacher'),
     QuizController.uploadQuizFile
 );
+router.put('/quizzes/:id/approve', checkRole('admin'), QuizController.approveQuiz);
+router.put('/quizzes/:id/reject', checkRole('admin'), QuizController.rejectQuiz);
+router.delete('/quizzes/:id', checkRole('admin'), QuizController.deleteQuiz);
+
+// Routes for category management
+router.post('/categories', checkRole('admin'), QuizController.createCategory);
+router.put('/categories/:id', checkRole('admin'), QuizController.updateCategory);
+router.delete('/categories/:id', checkRole('admin'), QuizController.deleteCategory);
 
 module.exports = router;
