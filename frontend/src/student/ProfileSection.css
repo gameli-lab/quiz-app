@@ -1,0 +1,27 @@
+.profile-section {
+    padding: 20px;
+    background-color: #f0f4f8;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .profile-section h3 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+  
+  .profile-section p {
+    font-size: 18px;
+    color: #34495e;
+    margin: 5px 0;
+  }
+  
+  .profile-section p:last-child {
+    font-weight: bold;
+    color: #16a085;
+  }
+  

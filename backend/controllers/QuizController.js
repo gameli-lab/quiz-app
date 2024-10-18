@@ -113,6 +113,130 @@ class QuizController {
             return res.status(500).json({ error: 'Internal server error' });
         }
     }
+
+    static async approveQuiz(req, res) {
+        const { quizId } = req.params;
+        try {
+            const quiz = await Quiz.getQuizById(quizId);
+            if (!quiz) {
+                return res.status(404).json({ error: 'Quiz not found' });
+            }
+
+            const result = await Quiz.updateQuizStatus(quizId, 'approved');
+            if (result.modifiedCount === 1) {
+                return res.status(200).json({ message: 'Quiz approved successfully' });
+            } else {
+                return res.status(400).json({ error: 'Could not approve the quiz' });
+            }
+        } catch (error) {
+            console.error('Error approving quiz:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+    static async rejectQuiz(req, res) {
+        const { id } = req.params;
+        try {
+            const db = dbClient.client.db();
+            const result = await db.collection('quizzes').updateOne(
+                { _id: new ObjectId(id) },
+                { $set: { status: 'rejected' } }
+            );
+            if (result.modifiedCount === 0) {
+                return res.status(404).json({ error: 'Quiz not found' });
+            }
+            return res.status(200).json({ message: 'Quiz rejected' });
+        } catch (error) {
+            console.error('Error rejecting quiz:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+    // Method to fetch all quizzes (with optional filters)
+    static async getAllQuizzes(req, res) {
+        const { category, status } = req.query;
+        const filters = {};
+        if (category) filters.category = category;
+        if (status) filters.status = status;
+
+        try {
+            const quizzes = await Quiz.getAllQuizzes(filters);
+            return res.status(200).json(quizzes);
+        } catch (error) {
+            console.error('Error fetching quizzes:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+    // Method to delete a quiz
+    static async deleteQuiz(req, res) {
+        const { quizId } = req.params;
+        try {
+            const result = await Quiz.deleteQuiz(quizId);
+            if (result.deletedCount === 1) {
+                return res.status(204).send();
+            } else {
+                return res.status(404).json({ error: 'Quiz not found' });
+            }
+        } catch (error) {
+            console.error('Error deleting quiz:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+    // Method to create a new category
+    static async createCategory(req, res) {
+        const { name } = req.body;
+        if (!name) {
+            return res.status(400).json({ error: 'Category name is required' });
+        }
+
+        try {
+            const result = await Quiz.createCategory(name);
+            return res.status(201).json({ categoryId: result.insertedId, name });
+        } catch (error) {
+            console.error('Error creating category:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+    // Method to update a category
+    static async updateCategory(req, res) {
+        const { categoryId } = req.params;
+        const { name } = req.body;
+        if (!name) {
+            return res.status(400).json({ error: 'Category name is required' });
+        }
+
+        try {
+            const result = await Quiz.updateCategory(categoryId, name);
+            if (result.modifiedCount === 1) {
+                return res.status(200).json({ message: 'Category updated successfully' });
+            } else {
+                return res.status(404).json({ error: 'Category not found' });
+            }
+        } catch (error) {
+            console.error('Error updating category:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+    // Method to delete a category
+    static async deleteCategory(req, res) {
+        const { categoryId } = req.params;
+        try {
+            const result = await Quiz.deleteCategory(categoryId);
+            if (result.deletedCount === 1) {
+                return res.status(204).send();
+            } else {
+                return res.status(404).json({ error: 'Category not found' });
+            }
+        } catch (error) {
+            console.error('Error deleting category:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
 }
 
 

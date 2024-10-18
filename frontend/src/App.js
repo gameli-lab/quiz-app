@@ -4,7 +4,9 @@ import HomePage from './Homepage';
 import RoleSelection from './role';
 import Signup from './signup';
 import Login from './login';
-
+import AdminDashboard from './admin/AdminDashboard'; // Assuming you have this component
+import TeacherDashboard from './teacher/TeacherDashboard'; // Assuming you have this component
+import StudentDashboard from './student/StudentDashboard'; // Assuming you have this component
 
 const App = () => {
   return (
@@ -21,6 +23,14 @@ const App = () => {
       {/* Login route */}
       <Route path="/login" element={<Login />} />
 
+      {/* Admin Dashboard */}
+      <Route path="/admin" element={<AdminDashboard />} />
+
+      {/* Teacher Dashboard */}
+      <Route path="/teacher" element={<TeacherDashboard />} />
+
+      {/* Student Dashboard */}
+      <Route path="/student" element={<StudentDashboard />} />
 
     </Routes>
   );

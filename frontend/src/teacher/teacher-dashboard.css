@@ -1,0 +1,106 @@
+.teacher-dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .header {
+    background-color: #343a40;
+    color: white;
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .header nav a {
+    margin-left: 20px;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .dashboard-container {
+    display: flex;
+    flex: 1;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #f8f9fa;
+    padding: 20px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin: 10px 0;
+    cursor: pointer;
+  }
+  
+  .dashboard-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .create-quiz-section,
+  .manage-quizzes-section,
+  .view-results-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .create-quiz-section form div {
+    margin-bottom: 15px;
+  }
+  
+  .create-quiz-section form input,
+  .create-quiz-section form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .create-quiz-section form button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .manage-quizzes-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .manage-quizzes-section ul li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .manage-quizzes-section ul li button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .view-results-section table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .view-results-section th,
+  .view-results-section td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  

@@ -18,7 +18,7 @@ const RoleSelection = () => {
       {/* Add NavBar component */}
       <NavBar />
 
-      <h2>Select Your Role</h2>
+      <h2>Please are you a student or a teacher or an admin?</h2>
       <div className="role-cards">
         <div
           className="role-card student-card"
@@ -33,6 +33,13 @@ const RoleSelection = () => {
         >
           <h3>Teacher</h3>
           <p>Join as a teacher to create quizzes and monitor students' performance.</p>
+        </div>
+        <div
+          className="role-card admin-card"
+          onClick={() => handleSelection('admin')}
+        >
+          <h3>Admin</h3>
+          <p>Sign in as an admin to manage student and teacher accounts.</p>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ const dbClient = require('../utils/db');
 const redisclient = require('../utils/redis');
 const { ObjectId } = require('mongodb');
 
-const chechRole = (requiredRole) => {
+const checkRole = (requiredRole) => {
     return async (req, res, next) => {
         const token = req.headers['x-token'];
         if (!token) {
@@ -28,4 +28,4 @@ const chechRole = (requiredRole) => {
 };
 
 
-module.exports = { chechRole }
+module.exports = { checkRole }

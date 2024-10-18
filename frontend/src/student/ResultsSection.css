@@ -1,0 +1,42 @@
+.results-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .results-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .results-section th, .results-section td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .results-section th {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .results-section tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .results-section tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .results-section td {
+    color: #2c3e50;
+    font-size: 16px;
+  }
+  
+  .results-section td:first-child {
+    font-weight: bold;
+  }
+  

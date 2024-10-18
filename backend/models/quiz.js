@@ -80,6 +80,19 @@ class Quiz {
         const db = dbClient.client.db();
         return await db.collection('categories').deleteOne({ _id: new ObjectId(categoryId) });
     }
+
+    static async getQuizStats() {
+        const db = dbClient.client.db();
+        const quizzes = await db.collection('quizzes').aggregate([
+            { $lookup: { from: 'results', localField: '_id', foreignField: 'quizId', as: 'results' }},
+            { $project: {
+                subjectName: 1,
+                takenCount: { $size: '$results' },
+                averageScore: { $avg: '$results.score' },
+            }},
+        ]).toArray();
+        return quizzes;
+    }
 }
 
 module.exports = Quiz;

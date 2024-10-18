@@ -27,11 +27,11 @@ class UserController {
             return res.status(400).json({ error: 'Role must be either "studend" or "teacher"' });
         }
         if (role === 'teacher') {
-            if (!fullName || !subjectExpertise || !school) {
+            if (!fullName || !subjectExpertise || !schoolName) {
                 return res.status(400).json({ error: 'Full name, subject expertise, and school are required' });
             }
         } else if (role === 'student') {
-            if (!fullName || !gradeLevel || !school) {
+            if (!fullName || !gradeLevel || !schoolName) {
                 return res.status(400).json({ error: 'Full name, grade level(class), and school are required' });
             }
         }

@@ -25,7 +25,17 @@ const Login = () => {
         const data = await response.json();
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('userRole', data.role);
-        navigate('/dashboard');
+
+        // Redirect based on role
+        if (data.role === 'admin') {
+          navigate('/admin-dashboard');
+        } else if (data.role === 'teacher') {
+          navigate('/teacher-dashboard');
+        } else if (data.role === 'student') {
+          navigate('/student-dashboard');
+        } else {
+          setError('Unknown user role. Please contact support.');
+        }
       } else {
         setError('Invalid username or password');
       }

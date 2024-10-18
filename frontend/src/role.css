@@ -49,3 +49,7 @@
     color: white;
   }
   
+  .admin-card:hover {
+    background-color: #2196F3;
+    color: white;
+  }
