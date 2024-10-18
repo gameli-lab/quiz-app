@@ -10,8 +10,9 @@ root.render(
   <React.StrictMode>
     <Router>
       <App />
-    </Router>
-    {/* <HomePage /> */}
+     {/* <HomePage /> */}
+     </Router>
+
 
   </React.StrictMode>
 );

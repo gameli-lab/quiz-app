@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import CreateQuizSection from './CreateQuizSection';
 import ManageQuizzesSection from './ManageQuizzesSection';
 import ViewResultsSection from './ViewResultsSection';
-import './teacher-dashboard.css';
+// import './teacher-dashboard.css';
 
 const TeacherDashboard = () => {
   const [activeSection, setActiveSection] = useState('createQuiz'); // Default section

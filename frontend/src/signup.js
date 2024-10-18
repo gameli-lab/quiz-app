@@ -74,7 +74,13 @@ const Signup = () => {
       if (response.ok) {
         console.log('User created successfully:', data);
         // Redirect user after successful signup (e.g., to login page or dashboard)
-        navigate('/login');  // Redirect to login page after successful signup
+        if (data.role === 'admin') {
+          navigate('/admin/dashboard'); // Redirect to admin dashboard
+        } else if (data.role === 'teacher') {
+          navigate('/teacher/dashboard'); // Redirect to teacher dashboard
+        } else {
+          navigate('/student/dashboard'); // Redirect to student dashboard
+        }//navigate('/login');  // Redirect to login page after successful signup
       } else {
         console.error('Error:', data.message || 'An error occurred during signup');
       }
