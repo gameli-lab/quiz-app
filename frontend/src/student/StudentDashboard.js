@@ -6,7 +6,7 @@ import ResultsSection from './ResultsSection';
 import ProgressChart from './ProgressChart';
 import ProfileSection from './ProfileSection';
 import Footer from '../component/Footer';
-import './StudentDashboard.css';
+// import './StudentDashboard.css';
 
 const StudentDashboard = () => {
   return (

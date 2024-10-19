@@ -1,0 +1,33 @@
+/* Layout.css */
+html, body {
+    height: 100%; /* Ensure the body takes full height */
+    margin: 0;    /* Remove default margin */
+}
+
+.layout {
+    display: flex;
+    flex-direction: column; /* Stack header, main, footer vertically */
+    min-height: 100vh;     /* Full height of the viewport */
+}
+
+/* .header {
+    * Your header styles *
+} */
+
+.main {
+    flex: 1;               /* Allow main to grow */
+    display: flex;         /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center;   /* Center vertically */
+    padding: 20px;        /* Optional padding for small screens */
+}
+
+/* .footer {
+    * Your footer styles *
+} */
+
+@media (max-width: 600px) {
+    .main {
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+}

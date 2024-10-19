@@ -2,7 +2,7 @@ const dbClient = require('../utils/db');
 const redisclient = require('../utils/redis');
 const { v4: uuidv4 } = require ('uuid');
 const bcrypt = require('bcrypt');
-
+// const crypto = require('crypto');
 
 class AuthController {
 /*     static async getConnect(req, res) {
@@ -50,16 +50,16 @@ class AuthController {
 
         const base64Credentials = authHeader.split(' ')[1];
         const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
-        const [email, password] = credentials.split(':');
+        const [username, password] = credentials.split(':');
 
         // Validate email and password
-        if (!email || !password) {
-            return res.status(401).json({ error: 'invalid email or password' });
+        if (!username || !password) {
+            return res.status(401).json({ error: 'invalid username or password' });
         }
 
         try {
             const db = dbClient.client.db();
-            const user = await db.collection('users').findOne({ email });
+            const user = await db.collection('users').findOne({ 'userData.username': username });
             console.log(user);
 
             // Check if user exists
@@ -68,21 +68,22 @@ class AuthController {
             }
 
             // Compare provided password with the hashed password in the database
-            const passMatch = await bcrypt.compare(password, user.password);
+            const passMatch = await bcrypt.compare(password, user.userData.password);
             if (!passMatch) {
-                return res.status(401).json({ error: 'Wrong password' });
+                return res.status(401).json({ error: `Wrong password for user ${username}, password used ${password}` });
             }
+            // const hashedPass = crypto.createHash('sha1').update(password).digest('hex');
 
             // Generate authentication token
             const token = uuidv4();
             const key = `auth_${token}`;
             
             // Store the token in Redis with the user ID and set expiration (24 hours)
-            await redisClient.set(key, String(user._id));
-            await redisClient.expire(key, 86400);  // 86400 seconds = 24 hours
+            await redisclient.set(key, String(user._id));
+            await redisclient.expire(key, 86400);  // 86400 seconds = 24 hours
 
             // Return the token and user's role to the frontend
-            return res.status(200).json({ token, role: user.role });
+            return res.status(200).json({ token, role: user.userData.role });
         } catch (error) {
             console.error('Error during authentication:', error);
             return res.status(500).json({ error: 'Internal Server Error' });

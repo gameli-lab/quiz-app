@@ -1,39 +1,30 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import LandingPage from './landing';
+import Layout from './layout'; 
+import HomePage from './Homepage';
 import RoleSelection from './role';
 import Signup from './signup';
 import Login from './login';
-import AdminDashboard from './admin/AdminDashboard'; // Assuming you have this component
-import TeacherDashboard from './teacher/TeacherDashboard'; // Assuming you have this component
-import StudentDashboard from './student/StudentDashboard'; // Assuming you have this component
+import AdminDashboard from './admin/AdminDashboard';
+import TeacherDashboard from './teacher/TeacherDashboard';
+import StudentDashboard from './student/StudentDashboard';
 
 const App = () => {
   return (
     <Routes>
-      {/* Home route */}
-      <Route path="/" element={<LandingPage />} />
-
-      {/* Role selection route */}
-      <Route path="/role" element={<RoleSelection />} />
-      
-      {/* Signup route */}
-      <Route path="/signup" element={<Signup />} />
-
-      {/* Login route */}
-      <Route path="/login" element={<Login />} />
-
-      {/* Admin Dashboard */}
-      <Route path="/admin" element={<AdminDashboard />} />
-
-      {/* Teacher Dashboard */}
-      <Route path="/teacher" element={<TeacherDashboard />} />
-
-      {/* Student Dashboard */}
-      <Route path="/student" element={<StudentDashboard />} />
-
+      {/* Wrap all routes with the Layout */}
+      <Route path="/" element={<Layout />}>
+        {/* Define all the individual routes inside Layout */}
+        <Route index element={<HomePage />} />
+        <Route path="role" element={<RoleSelection />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="login" element={<Login />} />
+        <Route path="admin" element={<AdminDashboard />} />
+        <Route path="teacher" element={<TeacherDashboard />} />
+        <Route path="student" element={<StudentDashboard />} />
+      </Route>
     </Routes>
   );
-}
+};
 
 export default App;

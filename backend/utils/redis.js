@@ -39,6 +39,18 @@ class RedisClient {
         });
     }
 
+    async expire(key, seconds) {
+        return new Promise((resolve, reject) => {
+            this.client.expire(key, seconds, (err, reply) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(reply);
+                }
+            });
+        });
+    }
+
     async del(key) {
         return new Promise((resolve, reject) => {
             this.client.del(key, (err, reply) => {
