@@ -1,9 +1,9 @@
-/* Layout.css *
+/* Layout.css */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-}*
+}
 
 .layout {
     display: flex;
@@ -13,7 +13,7 @@ html, body {
 
 /* .header {
     * Your header styles *
-} *
+} */
 
 .main {
     flex: 1; 
@@ -27,10 +27,10 @@ html, body {
 
 /* .footer {
     * Your footer styles *
-} *
+} */
 
 @media (max-width: 600px) {
     .main {
         padding: 10px;
     }
-}*/
+}
