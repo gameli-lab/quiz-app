@@ -5,6 +5,7 @@ const dbClient = require('./utils/db');
 const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
+// const redisclient = require('./utils/redis');
 
 const PORT = process.env.PORT || 5000
 
@@ -20,6 +21,7 @@ app.use((err, req, res, next) => {
 
 
 dbClient.client.connect()
+// redisclient.client.connect()
     .then(() =>{
         app.listen(PORT, () => {
             console.log(`Server listening on port ${PORT}`);

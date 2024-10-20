@@ -64,7 +64,7 @@ class AuthController {
 
             // Check if user exists
             if (!user) {
-                return res.status(401).json({ error: 'User not found' });
+                return res.status(401).json({ error: `User with username ${username} not found in ${db.collection('users')}` });
             }
 
             // Compare provided password with the hashed password in the database

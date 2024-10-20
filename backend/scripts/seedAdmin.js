@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const seedAdminAccount = async () => {
     try {
-        await dbClient.connect();
+        await dbClient.client.connect();
         const db = dbClient.client.db('quiz-app');
         const usersCollection = db.collection('users');
         

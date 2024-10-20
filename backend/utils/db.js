@@ -5,7 +5,7 @@ class DBClient {
     constructor() {
         const host = process.env.DB_HOST || 'localhost';
         const port = process.env.DB_PORT || 27017;
-        const database = process.env.DB_DATABASE || 'backend';
+        const database = process.env.DB_DATABASE || 'quiz-app';
 
         this.uri = `mongodb://${host}:${port}/${database}`;
         this.client = new MongoClient(this.uri, {

@@ -1,7 +1,6 @@
 import React from 'react';
 import './role.css';
 import { useNavigate } from 'react-router-dom';
-import NavBar from './navbar';
 
 
 const RoleSelection = () => {
@@ -15,8 +14,6 @@ const RoleSelection = () => {
   return (
     
     <div className="role-selection">
-      {/* Add NavBar component */}
-      <NavBar />
 
       <h2>Please are you a student or a teacher or an admin?</h2>
       <div className="role-cards">

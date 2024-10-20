@@ -69,12 +69,12 @@ nav a:hover {
   background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
   padding: 20px;
   border-radius: 10px;
-  width: 300px; /* Fixed width for the square */
+  width: 250px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .hero-image {
-  width: 50%; /* Adjust to take half the space */
+  width: 50%;
   height: auto;
   object-fit: cover;
 }
@@ -91,17 +91,17 @@ nav a:hover {
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   .hero {
-    flex-direction: column; /* Stack on smaller screens */
+    flex-direction: column;
     align-items: center;
   }
 
   .hero-content {
-    width: 90%; /* Full width on small screens */
-    margin-bottom: 20px; /* Space below content */
+    width: 90%;
+    margin-bottom: 20px;
   }
 
   .hero-image {
-    width: 90%; /* Full width for the image */
+    width: 90%; 
   }
 
   .hero-content h2 {
@@ -127,7 +127,7 @@ nav a:hover {
 
 .feature-item {
   margin: 15px;
-  flex: 1 1 200px; /* Flex basis for responsive sizing */
+  flex: 1 1 200px;
   max-width: 250px;
   text-align: center;
 }

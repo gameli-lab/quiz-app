@@ -9,7 +9,7 @@ import AdminDashboard from './admin/AdminDashboard';
 import TeacherDashboard from './teacher/TeacherDashboard';
 import StudentDashboard from './student/StudentDashboard';
 
-const App = () => {
+const Routter = () => {
   return (
     <Routes>
       {/* Wrap all routes with the Layout */}
@@ -27,4 +27,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Routter;
