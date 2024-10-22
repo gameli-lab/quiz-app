@@ -1,15 +1,15 @@
-/* General Styles *
+/* General Styles */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-  }*/
+  }
   
   body {
     background: linear-gradient(to right, #6a11cb, #2575fc);
     color: #333;
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
     height: 100vh;

@@ -29,6 +29,7 @@
     "helmet": "^8.0.0",
     "image-thumbnail": "^1.0.10",
     "json2csv": "^6.0.0-alpha.2",
+    "jsonwebtoken": "^9.0.2",
     "mammoth": "^1.8.0",
     "mime-types": "^2.1.27",
     "mongodb": "^6.9.0",

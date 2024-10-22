@@ -14,7 +14,7 @@ body {
 }
 
 /* Header */
-.home-header {
+/* .home-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,7 +32,7 @@ body {
 .logo {
   width: 50px;
   height: 50px;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 nav ul {
@@ -42,7 +42,8 @@ nav ul {
 }
 
 nav li {
-  margin: 0 15px;
+  margin: 0 10px;
+  align-items: center;
   color:#333;
 }
 
@@ -54,22 +55,77 @@ nav a {
 
 nav a:hover {
   color: #007bff;
-}
+} */
 
-/* Hero Section */
-.hero {
+
+/* Navbar container */
+.navbar {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 0;
+  background-color: #282c34;
+  padding: 10px 20px;
 }
 
+/* Branding section */
+.branding {
+  display: flex;
+  align-items: center;
+}
+
+.branding .logo {
+  width: 50px; /* Adjust as needed */
+  height: auto;
+  margin-right: 10px;
+}
+
+.branding h1 {
+  color: #61dafb; /* Light blue color */
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Navigation links as buttons */
+nav {
+  display: flex;
+}
+
+nav a {
+  background-color: #61dafb; /* Button background color */
+  color: #282c34; /* Text color */
+  text-decoration: none;
+  padding: 10px 15px; /* Padding for button effect */
+  border-radius: 5px; /* Rounded corners */
+  margin: 0 10px; /* Spacing between buttons */
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+nav a:hover {
+  background-color: #21a1f1; /* Darker shade on hover */
+  transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Active link styling */
+.navlink-active {
+  background-color: #21a1f1; /* Active button color */
+}
+
+
+/* Hero Section */
+/* .hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 50px;
+  flex-direction: row;
+height: 100vh;}
+
 .hero-content {
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent background *
+  padding: auto;
   border-radius: 10px;
-  width: 250px;
+  width: auto;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -77,6 +133,7 @@ nav a:hover {
   width: 50%;
   height: auto;
   object-fit: cover;
+  border-radius: 10px;
 }
 
 .hero-content h2 {
@@ -88,7 +145,7 @@ nav a:hover {
   font-size: 1em;
 }
 
-/* Media Queries for Responsiveness */
+/* Media Queries for Responsiveness *
 @media (max-width: 768px) {
   .hero {
     flex-direction: column;
@@ -111,7 +168,89 @@ nav a:hover {
   .hero-content p {
     font-size: 0.9em;
   }
+} */
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  background-color: #f5f5f5;
+  height: 100vh; /* Full screen height */
 }
+
+.hero img {
+  max-width: 50%; /* Half width for the image */
+  height: auto;
+  border-radius: 10px;
+}
+
+.hero-content {
+  max-width: 40%;
+  text-align: left;
+  margin-left: 30px;
+}
+
+.hero h2 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.hero p {
+  font-size: 1.5rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.cta-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 20px;
+    height: auto; /* Adjust height for smaller screens */
+  }
+
+  .hero img {
+    max-width: 80%;
+    margin-bottom: 20px;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    text-align: center;
+    margin-left: 0;
+  }
+
+  .hero h2 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+  }
+
+  .cta-btn {
+    font-size: 1rem;
+  }
+}
+
 
 /* Features Overview */
 .features {
@@ -148,7 +287,7 @@ nav a:hover {
 .testimonials {
   padding: 20px;
   text-align: center;
-  background-color: #ffffff;
+  background-color:  rgba(255, 255, 255, 0.6);
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin: 20px 0;
@@ -158,6 +297,28 @@ nav a:hover {
   font-style: italic;
   margin: 15px 0;
 }
+
+/* About Us */
+.about {
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.6); /* White with 60% opacity */
+  text-align: center;
+  border-radius: 10px; /* Optional: to give the section a rounded look */
+  margin: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+}
+.about h3 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.about p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
 
 /* Footer */
 footer {

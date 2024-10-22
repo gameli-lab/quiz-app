@@ -1,12 +1,12 @@
-import React from 'react';
-import Header from '../component/Header';
-import Sidebar from '../component/Sidebar';
-import QuizSection from './QuizSection';
-import ResultsSection from './ResultsSection';
-import ProgressChart from './ProgressChart';
-import ProfileSection from './ProfileSection';
-import Footer from '../component/Footer';
-// import './StudentDashboard.css';
+import React from "react";
+import Header from "../component/Header";
+import Sidebar from "../component/Sidebar";
+import QuizSection from "./QuizSection";
+import ResultsSection from "./ResultsSection";
+import ProgressChart from "./ProgressChart";
+import ProfileSection from "./ProfileSection";
+import Footer from "../component/Footer";
+import "./StudentDashboard.css";
 
 const StudentDashboard = () => {
   return (

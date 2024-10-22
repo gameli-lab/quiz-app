@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import './signup.css';  // Import your CSS
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./signup.css"; // Import your CSS
 
 const Signup = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   // State to capture user inputs
-  const [role, setRole] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [schoolName, setSchoolName] = useState('');
-  
+  const [role, setRole] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [schoolName, setSchoolName] = useState("");
+
   // Student-specific state
-  const [gradeLevel, setGradeLevel] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [guardianContact, setGuardianContact] = useState('');
-  
+  const [gradeLevel, setGradeLevel] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [guardianContact, setGuardianContact] = useState("");
+
   // Teacher-specific state
-  const [subjectExpertise, setSubjectExpertise] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [yearsOfExperience, setYearsOfExperience] = useState('');
+  const [subjectExpertise, setSubjectExpertise] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [yearsOfExperience, setYearsOfExperience] = useState("");
 
   // Capture role from URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const roleParam = params.get('role');
-    setRole(roleParam || ''); // Default to empty if no role is passed
+    const roleParam = params.get("role");
+    setRole(roleParam || ""); // Default to empty if no role is passed
   }, [location]);
 
   // Handle form submission
@@ -42,18 +42,18 @@ const Signup = () => {
       username,
       fullName,
       role,
-      schoolName,
+      schoolName
     };
 
     // Add student-specific fields
-    if (role === 'student') {
+    if (role === "student") {
       userData.gradeLevel = gradeLevel;
       userData.dateOfBirth = dateOfBirth;
       userData.guardianContact = guardianContact;
     }
 
     // Add teacher-specific fields
-    if (role === 'teacher') {
+    if (role === "teacher") {
       userData.subjectExpertise = subjectExpertise;
       userData.phoneNumber = phoneNumber;
       userData.yearsOfExperience = yearsOfExperience;
@@ -61,31 +61,34 @@ const Signup = () => {
 
     try {
       // Send POST request to the backend
-      const response = await fetch('http://localhost:5000/users', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/users", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       // Handle the response
       const data = await response.json();
       if (response.ok) {
-        console.log('User created successfully:', data);
+        console.log("User created successfully:", data);
         // Redirect user after successful signup (e.g., to login page or dashboard)
-        if (data.role === 'admin') {
-          navigate('/admin/dashboard'); // Redirect to admin dashboard
-        } else if (data.role === 'teacher') {
-          navigate('/teacher/dashboard'); // Redirect to teacher dashboard
+        if (data.role === "admin") {
+          navigate("/admin/AdminDashboard"); // Redirect to admin dashboard
+        } else if (data.role === "teacher") {
+          navigate("/teacher/TeacherDashboard"); // Redirect to teacher dashboard
         } else {
-          navigate('/student/dashboard'); // Redirect to student dashboard
-        }//navigate('/login');  // Redirect to login page after successful signup
+          navigate("/student/StudentDashboard"); // Redirect to student dashboard
+        } //navigate('/login');  // Redirect to login page after successful signup
       } else {
-        console.error('Error:', data.message || 'An error occurred during signup');
+        console.error(
+          "Error:",
+          data.message || "An error occurred during signup"
+        );
       }
     } catch (error) {
-      console.error('Network error:', error);
+      console.error("Network error:", error);
     }
   };
 
@@ -131,7 +134,7 @@ const Signup = () => {
         />
 
         {/* Student-specific fields */}
-        {role === 'student' && (
+        {role === "student" && (
           <>
             <input
               type="text"
@@ -158,7 +161,7 @@ const Signup = () => {
         )}
 
         {/* Teacher-specific fields */}
-        {role === 'teacher' && (
+        {role === "teacher" && (
           <>
             <input
               type="text"

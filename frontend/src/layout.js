@@ -1,18 +1,19 @@
 // Layout.js
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import Header from './header';
-import Footer from './footer';
-import './layout.css';
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Header from "./header";
+import Footer from "./footer";
+import "./layout.css";
+import Navbar from "./navbar";
 
 const Layout = () => {
   return (
     <div className="layout">
       {/* Header stays on top */}
-      <Header />
+      <Navbar />
 
       {/* This is where the routed content will be rendered */}
-      <main className='main'>
+      <main className="main">
         <Outlet />
       </main>
 
