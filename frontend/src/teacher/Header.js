@@ -1,9 +1,13 @@
-import React from 'react';
-import './teacher-dashboard.css';
+import React from "react";
+import "./teacher-dashboard.css";
 
-const Header = () => {
+const Header = ({ toggleSidebar }) => {
   return (
     <div className="header">
+      {/* Hamburger menu button for mobile view */}
+      <button className="hamburger-menu" onClick={toggleSidebar}>
+        &#9776;
+      </button>
       <h1>Teacher Dashboard</h1>
       <nav>
         <a href="/">Home</a>

@@ -8,8 +8,11 @@ import Login from "./login";
 import AdminDashboard from "./admin/AdminDashboard";
 import TeacherDashboard from "./teacher/TeacherDashboard";
 import StudentDashboard from "./student/StudentDashboard";
+import ProtectedRoute from "./protectedroute";
 
 const App = () => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const role = localStorage.getItem("userRole");
   return (
     <>
       <Routes>
@@ -18,6 +21,9 @@ const App = () => {
           <Route path="role" element={<RoleSelection />} />
           <Route path="signup" element={<Signup />} />
           <Route path="login" element={<Login />} />
+        </Route>
+        {/* {ProtectedRoute} */}
+        <Route element={<ProtectedRoute />}>
           <Route path="admin/dashboard" element={<AdminDashboard />} />
           <Route path="teacher/dashboard" element={<TeacherDashboard />} />
           <Route path="student/dashboard" element={<StudentDashboard />} />

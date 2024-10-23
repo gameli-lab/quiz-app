@@ -47,7 +47,7 @@ const StudentDashboard = () => {
       </div>
 
       {/* Footer */}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

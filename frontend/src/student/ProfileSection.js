@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import './ProfileSection.css';
+import React, { useState, useEffect } from "react";
+import "./ProfileSection.css";
 
 const ProfileSection = () => {
   const [profile, setProfile] = useState({});
 
   useEffect(() => {
-    // Fetch user profile from backend
     async function fetchProfile() {
-      const response = await fetch('http://localhost:5000/users/me');
+      const response = await fetch("http://localhost:5000/users/me");
       const data = await response.json();
       setProfile(data);
     }

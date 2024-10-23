@@ -26,11 +26,9 @@ class UserController {
       return res.status(400).json({ error: "Invalid email" });
     }
     if (!password || password.length < MIN_PASS_LENGTH) {
-      return res
-        .status(400)
-        .json({
-          error: `Password should be at least ${MIN_PASSWORD_LENGTH} characters long`
-        });
+      return res.status(400).json({
+        error: `Password should be at least ${MIN_PASSWORD_LENGTH} characters long`
+      });
     }
     if (!username) {
       return res.status(400).json({ error: "Username is required" });
@@ -42,19 +40,15 @@ class UserController {
     }
     if (role === "teacher") {
       if (!fullName || !subjectExpertise || !schoolName) {
-        return res
-          .status(400)
-          .json({
-            error: "Full name, subject expertise, and school are required"
-          });
+        return res.status(400).json({
+          error: "Full name, subject expertise, and school are required"
+        });
       }
     } else if (role === "student") {
       if (!fullName || !gradeLevel || !schoolName) {
-        return res
-          .status(400)
-          .json({
-            error: "Full name, grade level(class), and school are required"
-          });
+        return res.status(400).json({
+          error: "Full name, grade level(class), and school are required"
+        });
       }
     }
     try {
@@ -95,12 +89,12 @@ class UserController {
   static async getMe(req, res) {
     const token = req.headers["x-token"];
     if (!token) {
-      return res.status(401).json({ error: "Unauthorised" });
+      return res.status(401).json({ error: "Unauthorised - missing token" });
     }
     const key = `auth_${token}`;
     const userId = await redisclient.get(key);
     if (!userId) {
-      return res.status(401).json({ error: "Unauthorised" });
+      return res.status(401).json({ error: "Unauthorised - invalid token" });
     }
 
     const db = dbClient.client.db();
@@ -108,7 +102,7 @@ class UserController {
       .collection("users")
       .findOne({ _id: new ObjectId(userId) });
     if (!user) {
-      return res.status(401).json({ error: "Unauthorised" });
+      return res.status(401).json({ error: "Unauthorised - user not found" });
     }
 
     return res.status(200).json({
@@ -188,7 +182,7 @@ class UserController {
 
   static async getAllUsers(req, res) {
     const db = dbClient.client.db();
-    const { role, status } = req.query; // Optionally filter by role or status
+    const { role, status } = req.query;
 
     const query = {};
     if (role) query.role = role;
@@ -250,12 +244,10 @@ class UserController {
         );
       if (!user.value) return res.status(404).json({ error: "User not found" });
 
-      return res
-        .status(200)
-        .json({
-          message: "User status updated successfully",
-          user: user.value
-        });
+      return res.status(200).json({
+        message: "User status updated successfully",
+        user: user.value
+      });
     } catch (error) {
       console.error("Error updating user status:", error);
       return res.status(500).json({ error: "Internal Server Error" });

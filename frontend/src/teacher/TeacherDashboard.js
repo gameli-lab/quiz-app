@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import CreateQuizSection from './CreateQuizSection';
-import ManageQuizzesSection from './ManageQuizzesSection';
-import ViewResultsSection from './ViewResultsSection';
-// import './teacher-dashboard.css';
+import React, { useState } from "react";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import CreateQuizSection from "./CreateQuizSection";
+import ManageQuizzesSection from "./ManageQuizzesSection";
+import ViewResultsSection from "./ViewResultsSection";
+import "./teacher-dashboard.css";
 
 const TeacherDashboard = () => {
-  const [activeSection, setActiveSection] = useState('createQuiz'); // Default section
+  const [activeSection, setActiveSection] = useState("createQuiz"); // Default section
+  const [sidebarOpen, setSidebarOpen] = useState(false); // For sidebar toggling
 
   const renderSection = () => {
     switch (activeSection) {
-      case 'createQuiz':
+      case "createQuiz":
         return <CreateQuizSection />;
-      case 'manageQuizzes':
+      case "manageQuizzes":
         return <ManageQuizzesSection />;
-      case 'viewResults':
+      case "viewResults":
         return <ViewResultsSection />;
       default:
         return <CreateQuizSection />;
@@ -24,10 +25,14 @@ const TeacherDashboard = () => {
 
   return (
     <div className="teacher-dashboard">
-      <Header />
+      <Header toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
       <div className="dashboard-container">
-        <Sidebar setActiveSection={setActiveSection} />
-        <div className="dashboard-content">
+        <Sidebar
+          setActiveSection={setActiveSection}
+          isOpen={sidebarOpen}
+          toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        />
+        <div className={`dashboard-content ${sidebarOpen ? "shifted" : ""}`}>
           {renderSection()}
         </div>
       </div>

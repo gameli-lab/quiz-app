@@ -1,6 +1,6 @@
 .admin-dashboard {
     display: flex;
-    min-height: 100vh;
+    min-height: auto;
   }
   
   .sidebar {
@@ -32,6 +32,6 @@
   .dashboard-content {
     flex-grow: 1;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #91b2ee;
   }
   

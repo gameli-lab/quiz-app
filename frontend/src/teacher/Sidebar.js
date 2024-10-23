@@ -1,15 +1,20 @@
-import React from 'react';
-import './teacher-dashboard.css';
+import React from "react";
+import "./teacher-dashboard.css";
 
-const Sidebar = ({ setActiveSection }) => {
+const Sidebar = ({ setActiveSection, isOpen, toggleSidebar }) => {
   return (
-    <div className="sidebar">
+    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
+      <button className="close-btn" onClick={toggleSidebar}>
+        ×
+      </button>
       <ul>
-        <li onClick={() => setActiveSection('createQuiz')}>Create Quiz</li>
-        <li onClick={() => setActiveSection('manageQuizzes')}>Manage Quizzes</li>
-        <li onClick={() => setActiveSection('viewResults')}>View Results</li>
+        <li onClick={() => setActiveSection("createQuiz")}>Create Quiz</li>
+        <li onClick={() => setActiveSection("manageQuizzes")}>
+          Manage Quizzes
+        </li>
+        <li onClick={() => setActiveSection("viewResults")}>View Results</li>
       </ul>
-    </div>
+    </aside>
   );
 };
 
