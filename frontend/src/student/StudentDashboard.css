@@ -1,48 +1,84 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
 .dashboard-container {
-    display: flex;
-    height: 100vh;
-  }
-  
-  .dashboard-content {
-    display: flex;
-    width: 100%;
-  }
-  
-  .sidebar {
-    width: 200px;
-    background-color: #2c3e50;
-    padding: 20px;
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar ul li {
-    margin-bottom: 10px;
-  }
-  
-  .sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    display: block;
-  }
-  
-  .sidebar ul li a:hover {
-    text-decoration: underline;
-  }
-  
-  .main-content {
-    flex: 1;
-    padding: 20px;
-  }
-  
-  .main-content section {
-    margin-bottom: 30px;
-  }
-  
-  h2 {
-    margin-bottom: 20px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.dashboard-content {
+  display: flex;
+  flex: 1;
+  transition: margin-left 0.3s;
+}
+
+.hamburger-icon {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  position: absolute; /* Positioned relative to the parent */
+  z-index: 2; /* Ensure it is above other elements */
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #343a40;
+  color: white;
+  padding: 20px;
+  position: relative;
+  transition: transform 0.3s ease;
+  transform: translateX(-100%); /* Hidden by default */
+}
+
+.sidebar.open {
+  transform: translateX(0); /* Show when open */
+}
+
+.sidebar h2 {
+  margin: 0 0 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.sidebar li:hover {
+  background-color: #495057;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  transition: margin-left 0.3s;
+}
+
+.hamburger-icon:before {
+  content: "☰"; /* Hamburger icon */
+}
+
+.hamburger-icon.open:before {
+  content: "✖"; /* X icon */
+}
+
+/* Optional: Additional styles for sections */
+.progress-overview, .quiz-section, .results-section, .profile-section {
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}

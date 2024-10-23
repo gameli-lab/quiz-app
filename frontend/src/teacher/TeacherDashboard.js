@@ -32,7 +32,10 @@ const TeacherDashboard = () => {
           isOpen={sidebarOpen}
           toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         />
-        <div className={`dashboard-content ${sidebarOpen ? "shifted" : ""}`}>
+        <div
+          className={`dashboard-content ${sidebarOpen ? "shifted" : ""}`}
+          onClick={() => sidebarOpen && setSidebarOpen(false)}
+        >
           {renderSection()}
         </div>
       </div>

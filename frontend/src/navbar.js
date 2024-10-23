@@ -2,7 +2,9 @@ import { NavLink, Link } from "react-router-dom";
 import logo from "./logo.jpg";
 import "./homepage.css";
 
-const Navbar = ({ isLoggedIn, role }) => {
+const Navbar = () => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const role = localStorage.getItem("userRole");
   return (
     <div className="navbar">
       <div className="branding">
@@ -13,7 +15,7 @@ const Navbar = ({ isLoggedIn, role }) => {
       </div>
       <nav>
         {!isLoggedIn && (
-          <>
+          <div>
             <NavLink
               to="/"
               className={({ isActive }) => (isActive ? "navlink-active" : "")}
@@ -38,11 +40,11 @@ const Navbar = ({ isLoggedIn, role }) => {
             >
               Sign In
             </NavLink>
-          </>
+          </div>
         )}
 
         {isLoggedIn && role === "admin" && (
-          <>
+          <div>
             <NavLink
               to="/admin/dashboard"
               className={({ isActive }) => (isActive ? "navlink-active" : "")}
@@ -55,11 +57,11 @@ const Navbar = ({ isLoggedIn, role }) => {
             >
               Logout
             </NavLink>
-          </>
+          </div>
         )}
 
         {isLoggedIn && role === "teacher" && (
-          <>
+          <div>
             <NavLink
               to="/teacher/dashboard"
               className={({ isActive }) => (isActive ? "navlink-active" : "")}
@@ -72,10 +74,10 @@ const Navbar = ({ isLoggedIn, role }) => {
             >
               Logout
             </NavLink>
-          </>
+          </div>
         )}
         {isLoggedIn && role === "student" && (
-          <>
+          <div>
             <NavLink
               to="/student/dashboard"
               className={({ isActive }) => (isActive ? "navlink-active" : "")}
@@ -88,7 +90,7 @@ const Navbar = ({ isLoggedIn, role }) => {
             >
               Logout
             </NavLink>
-          </>
+          </div>
         )}
       </nav>
     </div>

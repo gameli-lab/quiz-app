@@ -11,7 +11,8 @@ const Layout = () => {
 
   return (
     <div className="layout">
-      <Navbar isLoggedIn={isLoggedIn} role={role} />
+      {/* <Navbar isLoggedIn={isLoggedIn} role={role} /> */}
+      <Navbar />
 
       <main className="main">
         <Outlet />
