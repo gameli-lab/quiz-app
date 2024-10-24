@@ -3,8 +3,9 @@ import logo from "./logo.jpg";
 import "./homepage.css";
 
 const Navbar = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; // Ensure boolean value
   const role = localStorage.getItem("userRole");
+
   return (
     <div className="navbar">
       <div className="branding">
@@ -14,8 +15,9 @@ const Navbar = () => {
         <h1>QuizMaster</h1>
       </div>
       <nav>
-        {!isLoggedIn && (
-          <div>
+        {!isLoggedIn ? (
+          // Links for non-logged in users
+          <>
             <NavLink
               to="/"
               className={({ isActive }) => (isActive ? "navlink-active" : "")}
@@ -35,62 +37,30 @@ const Navbar = () => {
               Sign Up
             </NavLink>
             <NavLink
-              to="/login"
+              to="/logout"
               className={({ isActive }) => (isActive ? "navlink-active" : "")}
             >
               Sign In
             </NavLink>
-          </div>
-        )}
-
-        {isLoggedIn && role === "admin" && (
-          <div>
-            <NavLink
-              to="/admin/dashboard"
-              className={({ isActive }) => (isActive ? "navlink-active" : "")}
-            >
-              Dashboard
-            </NavLink>
-            <NavLink
-              to="/login"
-              className={({ isActive }) => (isActive ? "navlink-active" : "")}
-            >
-              Logout
-            </NavLink>
-          </div>
-        )}
-
-        {isLoggedIn && role === "teacher" && (
-          <div>
-            <NavLink
-              to="/teacher/dashboard"
-              className={({ isActive }) => (isActive ? "navlink-active" : "")}
-            >
-              Dashboard
-            </NavLink>
+          </>
+        ) : (
+          // Links for logged-in users based on their role
+          <>
+            {role && (
+              <NavLink
+                to={`/${role}/dashboard`}
+                className={({ isActive }) => (isActive ? "navlink-active" : "")}
+              >
+                Dashboard
+              </NavLink>
+            )}
             <NavLink
               to="/login"
               className={({ isActive }) => (isActive ? "navlink-active" : "")}
             >
               Logout
             </NavLink>
-          </div>
-        )}
-        {isLoggedIn && role === "student" && (
-          <div>
-            <NavLink
-              to="/student/dashboard"
-              className={({ isActive }) => (isActive ? "navlink-active" : "")}
-            >
-              Dashboard
-            </NavLink>
-            <NavLink
-              to="/login"
-              className={({ isActive }) => (isActive ? "navlink-active" : "")}
-            >
-              Logout
-            </NavLink>
-          </div>
+          </>
         )}
       </nav>
     </div>

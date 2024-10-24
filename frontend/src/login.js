@@ -15,7 +15,7 @@ const Login = () => {
 
     try {
       const response = await fetch("http://localhost:5000/connect", {
-        method: "GET",
+        method: "POST",
         headers: {
           Authorization: `Basic ${credentials}`
         }
@@ -38,7 +38,8 @@ const Login = () => {
           setError("Unknown user role. Please contact support.");
         }
       } else {
-        setError("Invalid username or password");
+        const errorData = await response.json();
+        setError(errorData.error);
       }
     } catch (error) {
       setError("Something went wrong. Please try again.");

@@ -5,6 +5,7 @@ const AppController = require("../controllers/AppController");
 const AuthController = require("../controllers/AuthController");
 const UserController = require("../controllers/UserController");
 const QuizController = require("../controllers/QuizController");
+const verifyToken = require("../middleware/Token");
 const AnalyticsController = require("../controllers/AnalyticsController");
 const SettingsController = require("../controllers/SettingsController");
 const { userValidator, validateUser } = require("../validators/userValidator");
@@ -20,88 +21,130 @@ const { checkRole } = require("../middleware/rbac");
 
 const upload = multer({ dest: "uploads/" });
 
-//Health check routes
+// Health check routes
 router.get("/status", AppController.getStatus);
 router.get("/stat", AppController.getStat);
 
-//User management routes
+// User management routes
 router.post("/users", userValidator, validateUser, UserController.postNew);
-router.get("/connect", AuthController.getConnect);
-router.get("/disconnect", AuthController.getDisconnect);
-router.get("/users/me", UserController.getMe);
+router.post("/connect", AuthController.getConnect);
+router.post("/disconnect", verifyToken, AuthController.getDisconnect);
+router.get("/users/me", verifyToken, UserController.getMe); // Protected route
 router.put(
   "/users/me",
+  verifyToken,
   profileValidator,
   validateProfile,
-  UserController.updateProfile
+  UserController.updateProfile // Protected route
 );
-router.delete("/users/:id", checkRole("admin"), UserController.deleteAccount);
-router.get("/users", checkRole("admin"), UserController.getAllUsers); // View all users
+router.delete(
+  "/users/:id",
+  verifyToken,
+  checkRole("admin"),
+  UserController.deleteAccount
+); // Protected route
+router.get(
+  "/users",
+  verifyToken,
+  checkRole("admin"),
+  UserController.getAllUsers
+); // Protected route
 router.put(
   "/users/:id/role",
+  verifyToken,
   checkRole("admin"),
-  UserController.updateUserRole
-); // Update user role
+  UserController.updateUserRole // Protected route
+);
 router.put(
   "/users/:id/status",
+  verifyToken,
   checkRole("admin"),
-  UserController.updateUserStatus
-); // Activate/deactivate user account
-router.get("/users", checkRole("admin"), AnalyticsController.getUsersAnalytics);
+  UserController.updateUserStatus // Protected route
+);
+router.get(
+  "/users/analytics",
+  verifyToken,
+  checkRole("admin"),
+  AnalyticsController.getUsersAnalytics
+); // Protected route
 
-//Quiz management routes
-router.get("quizzes/:subjectId", QuizController.getQuizBySubject);
-router.get("/quizzes", AnalyticsController.getQuizzesAnalytics);
-router.post("/results", QuizController.saveResult);
+// Quiz management routes
+router.get("/quizzes/:subjectId", verifyToken, QuizController.getQuizBySubject); // Protected route
+router.get("/quizzes", verifyToken, AnalyticsController.getQuizzesAnalytics); // Protected route
+router.post("/results", verifyToken, QuizController.saveResult); // Protected route
 router.post(
-  "quizzes/upload",
+  "/quizzes/upload",
+  verifyToken,
   upload.single("file"),
   uploadValidator,
   validateUpload,
-  QuizController.uploadQuizFile
+  QuizController.uploadQuizFile // Protected route
 );
 router.put(
   "/quizzes/:id/approve",
+  verifyToken,
   checkRole("admin"),
-  QuizController.approveQuiz
+  QuizController.approveQuiz // Protected route
 );
 router.put(
   "/quizzes/:id/reject",
+  verifyToken,
   checkRole("admin"),
-  QuizController.rejectQuiz
+  QuizController.rejectQuiz // Protected route
 );
-router.delete("/quizzes/:id", checkRole("admin"), QuizController.deleteQuiz);
+router.delete(
+  "/quizzes/:id",
+  verifyToken,
+  checkRole("admin"),
+  QuizController.deleteQuiz
+); // Protected route
 
 // Routes for category management
-router.post("/categories", checkRole("admin"), QuizController.createCategory);
+router.post(
+  "/categories",
+  verifyToken,
+  checkRole("admin"),
+  QuizController.createCategory
+); // Protected route
 router.put(
   "/categories/:id",
+  verifyToken,
   checkRole("admin"),
-  QuizController.updateCategory
+  QuizController.updateCategory // Protected route
 );
 router.delete(
   "/categories/:id",
+  verifyToken,
   checkRole("admin"),
-  QuizController.deleteCategory
+  QuizController.deleteCategory // Protected route
 );
-
-// Category routes
-router.post("/categories", QuizController.createCategory);
-router.get("/categories", QuizController.getAllCategories);
-router.put("/categories/:id", QuizController.updateCategory);
-router.delete("/categories/:id", QuizController.deleteCategory);
+router.get("/categories", verifyToken, QuizController.getAllCategories); // Protected route
 
 // Activity logs
-router.get("/activityLogs", AnalyticsController.getActivityLogs);
+router.get("/activityLogs", verifyToken, AnalyticsController.getActivityLogs); // Protected route
 
 // Reports routes
-router.get("/reports", SettingsController.generateReport);
-router.get("/reports", AnalyticsController.generateReport);
+router.get("/reports", verifyToken, AnalyticsController.generateReport); // Protected route
+router.get("/results", verifyToken, QuizController.getResults); // Protected route
 
 // Get current settings
-router.get("/settings", SettingsController.getSettings);
+router.get("/settings", verifyToken, SettingsController.getSettings); // Protected route
 
 // Update system settings
-router.put("/settings", SettingsController.updateSettings);
+router.put("/settings", verifyToken, SettingsController.updateSettings); // Protected route
+
+// Additional upload routes
+router.post(
+  "/upload-quiz",
+  verifyToken,
+  QuizController.validateUploadQuizFile(),
+  QuizController.uploadQuizFile // Protected route
+);
+router.post(
+  "/save-result",
+  verifyToken,
+  QuizController.validateSaveResult(),
+  QuizController.saveResult // Protected route
+);
 
 module.exports = router;

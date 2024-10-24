@@ -6,19 +6,18 @@ const ProfileSection = () => {
 
   useEffect(() => {
     async function fetchProfile() {
-      const token = localStorage.getItem('token');
-      const response = await fetch("http://localhost:5000/users/me",{
-        method: 'GET',
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/users/me", {
+        method: "GET",
         headers: {
-          'x-token': token
-      }
-    });
+          "x-token": token
+        }
+      });
 
-  if (!response.ok) {
+      if (!response.ok) {
         console.error("Error fetching profile:", await response.json());
         return;
-    }
-                                  );
+      }
       const data = await response.json();
       setProfile(data);
     }

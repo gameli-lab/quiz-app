@@ -59,15 +59,16 @@ class AuthController {
       return res.status(500).json({ error: "Internal Server Error" });
     }
   }
+
   static async getDisconnect(req, res) {
     const token = req.headers["x-token"];
     if (!token) {
-      return res.status(401).json({ error: "Unathorized" });
+      return res.status(401).json({ error: "Unathorized - missing token" });
     }
     const key = `auth_${token}`;
     const userId = await redisclient.get(key);
     if (!userId) {
-      return res.status(401).json({ error: "Unathorized" });
+      return res.status(401).json({ error: "Unathorized - invalid token" });
     }
 
     await redisclient.del(key);
