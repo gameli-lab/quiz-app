@@ -6,7 +6,7 @@ const ProfileSection = () => {
 
   useEffect(() => {
     async function fetchProfile() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("authToken");
       const response = await fetch("http://localhost:5000/users/me", {
         method: "GET",
         headers: {

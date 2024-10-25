@@ -13,8 +13,12 @@ const UserManagement = () => {
   }, [filterRole, searchQuery]);
 
   const fetchUsers = async () => {
+    const token = localStorage.getItem("authToken");
     try {
       const response = await axios.get("http://localhost:5000/users", {
+        headers: {
+          "x-token": token
+        },
         params: { role: filterRole, search: searchQuery }
       });
       setUsers(response.data);

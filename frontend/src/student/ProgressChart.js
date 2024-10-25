@@ -67,7 +67,15 @@ const ProgressChart = () => {
 
   const fetchProgressData = async () => {
     try {
-      const response = await axios.get("/student/progress");
+      const token = localStorage.getItem("authToken");
+      const response = await axios.get(
+        "http://localhost:5000/student/progress",
+        {
+          headers: {
+            "x-token": token
+          }
+        }
+      );
 
       const scores = response.data.scores; // Assuming the response contains an array of quiz scores
       const labels = response.data.labels; // Assuming the response contains an array of quiz names

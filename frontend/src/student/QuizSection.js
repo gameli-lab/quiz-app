@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './QuizSection.css';
+import React, { useState, useEffect } from "react";
+import "./QuizSection.css";
 
 const QuizSection = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -7,7 +7,12 @@ const QuizSection = () => {
   useEffect(() => {
     // Fetch quizzes from backend
     async function fetchQuizzes() {
-      const response = await fetch('http://localhost:5000/quizzes');
+      const token = localStorage.getItem("authToken");
+      const response = await fetch("http://localhost:5000/quizzes", {
+        headers: {
+          "x-token": token
+        }
+      });
       const data = await response.json();
       setQuizzes(data);
     }

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './ResultsSection.css';
+import React, { useState, useEffect } from "react";
+import "./ResultsSection.css";
 
 const ResultsSection = () => {
   const [results, setResults] = useState([]);
@@ -7,7 +7,12 @@ const ResultsSection = () => {
   useEffect(() => {
     // Fetch results from backend
     async function fetchResults() {
-      const response = await fetch('http://localhost:5000/results');
+      const token = localStorage.getItem("authToken");
+      const response = await fetch("http://localhost:5000/results", {
+        headers: {
+          "x-token": token
+        }
+      });
       const data = await response.json();
       setResults(data);
     }

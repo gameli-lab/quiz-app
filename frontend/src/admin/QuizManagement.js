@@ -17,8 +17,13 @@ function QuizManagement() {
   }, []);
 
   const fetchQuizzes = async () => {
+    const token = localStorage.getItem("authToken");
     try {
-      const response = await fetch("/api/quizzes");
+      const response = await fetch("http://localhost:5000/quizzes", {
+        headers: {
+          "x-token": token
+        }
+      });
       const data = await response.json();
       setQuizzes(data);
     } catch (error) {
@@ -28,7 +33,11 @@ function QuizManagement() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("/api/categories");
+      const response = await fetch("http://localhost:5000/categories", {
+        headers: {
+          "x-token": localStorage.getItem("authToken")
+        }
+      });
       const data = await response.json();
       setCategories(data);
     } catch (error) {
@@ -46,7 +55,9 @@ function QuizManagement() {
 
   const approveQuiz = async (quizId) => {
     try {
-      await fetch(`/api/quizzes/${quizId}/approve`, { method: "PUT" });
+      await fetch(`http://localhost:5000/quizzes/${quizId}/approve`, {
+        method: "PUT"
+      });
       fetchQuizzes();
     } catch (error) {
       console.error("Error approving quiz:", error);
@@ -55,7 +66,9 @@ function QuizManagement() {
 
   const deleteQuiz = async (quizId) => {
     try {
-      await fetch(`/api/quizzes/${quizId}`, { method: "DELETE" });
+      await fetch(`http://localhost:5000/quizzes/${quizId}`, {
+        method: "DELETE"
+      });
       fetchQuizzes();
     } catch (error) {
       console.error("Error deleting quiz:", error);
@@ -66,13 +79,13 @@ function QuizManagement() {
     e.preventDefault();
     try {
       if (editingCategory) {
-        await fetch(`/api/categories/${editingCategory}`, {
+        await fetch(`http://localhost:5000/categories/${editingCategory}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: newCategory })
         });
       } else {
-        await fetch("/api/categories", {
+        await fetch("http://localhost:5000/categories", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: newCategory })
@@ -89,7 +102,7 @@ function QuizManagement() {
   const handleQuizSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch("/api/quizzes", {
+      await fetch("http://localhost:5000/quizzes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newQuiz)
@@ -102,12 +115,16 @@ function QuizManagement() {
   };
 
   const handleFileUpload = async (e) => {
+    const token = localStorage.getItem("authToken");
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      await fetch("/api/quizzes/upload", {
+      await fetch("http://localhost:5000/quizzes/upload", {
+        headers: {
+          "x-token": token
+        },
         method: "POST",
         body: formData
       });
@@ -143,7 +160,9 @@ function QuizManagement() {
 
   const deleteCategory = async (categoryId) => {
     try {
-      await fetch(`/api/categories/${categoryId}`, { method: "DELETE" });
+      await fetch(`http://localhost:5000/categories/${categoryId}`, {
+        method: "DELETE"
+      });
       fetchCategories();
     } catch (error) {
       console.error("Error deleting category:", error);

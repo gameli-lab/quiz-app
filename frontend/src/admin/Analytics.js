@@ -169,9 +169,15 @@ const Analytics = () => {
 
   const fetchAnalytics = async () => {
     try {
-      const quizResponse = await axios.get("/admin/analytics/quizzes");
-      const userResponse = await axios.get("/admin/analytics/users");
-      const logResponse = await axios.get("/admin/analytics/activityLogs");
+      const quizResponse = await axios.get(
+        "http://localhost:5000/admin/analytics/quizzes"
+      );
+      const userResponse = await axios.get(
+        "http://localhost:5000/admin/analytics/users"
+      );
+      const logResponse = await axios.get(
+        "http://localhost:5000/admin/analytics/activityLogs"
+      );
 
       // Check if response is JSON before setting state
       if (quizResponse.headers["content-type"].includes("application/json")) {

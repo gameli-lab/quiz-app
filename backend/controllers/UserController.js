@@ -138,12 +138,12 @@ class UserController {
     } = req.body;
 
     if (!token) {
-      return res.status(401).json({ error: "Unauthorised" });
+      return res.status(401).json({ error: "Unauthorised - missing token" });
     }
     const key = `auth_${token}`;
     const userId = await redisclient.get(key);
     if (!userId) {
-      return res.status(401).json({ error: "Unauthorised" });
+      return res.status(401).json({ error: "Unauthorised - invalid token" });
     }
     const db = dbClient.client.db();
     const updateData = {};
@@ -257,13 +257,13 @@ class UserController {
   static async deleteAccount(req, res) {
     const token = req.headers["x-token"];
     if (!token) {
-      return res.status(401).json({ error: "Unauthorised" });
+      return res.status(401).json({ error: "Unauthorised - missing token" });
     }
 
     const key = `auth_${token}`;
     const userId = await redisclient.get(key);
     if (!userId) {
-      return res.status(401).json({ error: "Unauthorised" });
+      return res.status(401).json({ error: "Unauthorised - invalid token" });
     }
     const db = dbClient.client.db();
     try {
