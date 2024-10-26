@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './teacher-dashboard.css';
+import React, { useState, useEffect } from "react";
+//import "./teacher-dashboard.css";
 
 const ManageQuizzesSection = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -7,7 +7,12 @@ const ManageQuizzesSection = () => {
   useEffect(() => {
     // Fetch quizzes from backend
     async function fetchQuizzes() {
-      const response = await fetch('http://localhost:5000/quizzes');
+      const response = await fetch("http://localhost:5000/quizzes", {
+        method: "GET",
+        headers: {
+          "x-token": localStorage.getItem("authToken")
+        }
+      });
       const data = await response.json();
       setQuizzes(data);
     }
@@ -19,7 +24,7 @@ const ManageQuizzesSection = () => {
     <div className="manage-quizzes-section">
       <h2>Manage Quizzes</h2>
       <ul>
-        {quizzes.map(quiz => (
+        {quizzes.map((quiz) => (
           <li key={quiz.id}>
             <span>{quiz.title}</span>
             <button>Edit</button>

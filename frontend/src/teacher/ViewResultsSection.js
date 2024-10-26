@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './teacher-dashboard.css';
+import React, { useState, useEffect } from "react";
+//import "./teacher-dashboard.css";
 
 const ViewResultsSection = () => {
   const [results, setResults] = useState([]);
@@ -7,7 +7,12 @@ const ViewResultsSection = () => {
   useEffect(() => {
     // Fetch results from backend
     async function fetchResults() {
-      const response = await fetch('http://localhost:5000/results');
+      const response = await fetch("http://localhost:5000/results", {
+        method: "GET",
+        headers: {
+          "x-token": localStorage.getItem("authToken")
+        }
+      });
       const data = await response.json();
       setResults(data);
     }
@@ -28,7 +33,7 @@ const ViewResultsSection = () => {
           </tr>
         </thead>
         <tbody>
-          {results.map(result => (
+          {results.map((result) => (
             <tr key={result.id}>
               <td>{result.quizTitle}</td>
               <td>{result.studentName}</td>

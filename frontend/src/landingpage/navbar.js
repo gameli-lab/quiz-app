@@ -1,10 +1,31 @@
-import { NavLink, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import logo from "./logo.jpg";
-import "./homepage.css";
+import { handleLogout } from "./logout";
+import "./css/homepage.css";
 
 const Navbar = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; // Ensure boolean value
-  const role = localStorage.getItem("userRole");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+    setRole(localStorage.getItem("userRole"));
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+      setRole(localStorage.getItem("userRole"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   return (
     <div className="navbar">
@@ -16,7 +37,6 @@ const Navbar = () => {
       </div>
       <nav>
         {!isLoggedIn ? (
-          // Links for non-logged in users
           <>
             <NavLink
               to="/"
@@ -37,14 +57,13 @@ const Navbar = () => {
               Sign Up
             </NavLink>
             <NavLink
-              to="/logout"
+              to="/login"
               className={({ isActive }) => (isActive ? "navlink-active" : "")}
             >
               Sign In
             </NavLink>
           </>
         ) : (
-          // Links for logged-in users based on their role
           <>
             {role && (
               <NavLink
@@ -54,12 +73,12 @@ const Navbar = () => {
                 Dashboard
               </NavLink>
             )}
-            <NavLink
-              to="/login"
-              className={({ isActive }) => (isActive ? "navlink-active" : "")}
+            <button
+              onClick={() => handleLogout(navigate)}
+              className="logout-button"
             >
               Logout
-            </NavLink>
+            </button>
           </>
         )}
       </nav>

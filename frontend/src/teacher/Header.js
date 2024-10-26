@@ -1,5 +1,5 @@
 import React from "react";
-import "./teacher-dashboard.css";
+//import "./teacher-dashboard.css";
 
 const Header = ({ toggleSidebar }) => {
   return (

@@ -1,6 +1,6 @@
 // Home.js
 import { Link } from "react-router-dom";
-import "./homepage.css";
+import "./css/homepage.css";
 import heroImage from "./hero.jpg";
 import custom_quiz from "./custom_quiz.jpg";
 import track_learning from "./track_learning.jpg";

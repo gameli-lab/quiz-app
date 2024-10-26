@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./signup.css"; // Import your CSS
+import "./css/signup.css"; // Import your CSS
 
 const Signup = () => {
   const location = useLocation();
