@@ -1,5 +1,6 @@
 const { body, param, query, validationResult } = require("express-validator");
 const Quiz = require("../models/quiz");
+const dbClient = require("../utils/db");
 const redisclient = require("../utils/redis");
 const fs = require("fs");
 const path = require("path");
@@ -30,49 +31,30 @@ class QuizController {
     return [body("name").notEmpty().withMessage("Category name is required")];
   }
 
-  /*   static async uploadQuizFile(req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+  static processQuizData(fileContent) {
+    const quizData = [];
+    const questionBlocks = fileContent.split(/\n\s*\n/); // Splits by double line breaks for each question block
 
-    const file = req.file;
-    if (!file) {
-      return res.status(400).json({ error: "No file uploaded" });
-    }
+    questionBlocks.forEach((block) => {
+      const lines = block.trim().split("\n");
+      const questionText = lines[0];
 
-    const filePath = path.join(__dirname, "..", "..", file.path);
-    const extension = path.extname(file.originalname).toLowerCase();
+      const choices = lines
+        .slice(1, -1)
+        .map((line) => line.replace(/^[A-D]:\s*/, "").trim()); // Remove letter labels
+      const answer = lines[lines.length - 1].replace(/Answer:\s*/, "").trim();
 
-    let fileContent = "";
-    try {
-      if (extension === ".txt") {
-        fileContent = fs.readFileSync(filePath, "utf-8");
-      } else if (extension === ".docx") {
-        const result = await mammoth.extractRawText({ path: filePath });
-        fileContent = result.value;
-      } else if (extension === ".pdf") {
-        const dataBuffer = fs.readFileSync(filePath);
-        const data = await pdfParse(dataBuffer);
-        fileContent = data.text;
-      } else {
-        return res.status(400).json({ error: "Unsupported file type" });
+      if (questionText && choices.length && answer) {
+        quizData.push({
+          question: questionText,
+          choices,
+          answer
+        });
       }
+    });
 
-      const quizData = QuizController.processQuizData(fileContent);
-      const subjectId = req.body.subjectId;
-      const quizId = await Quiz.createQuiz(subjectId, quizData);
-      return res.status(201).json({ quizId });
-    } catch (error) {
-      console.error("Error processing quiz file:", error);
-      return res.status(500).json({ error: "Internal server error" });
-    } finally {
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    }
+    return quizData;
   }
- */
 
   static async uploadQuizFile(req, res) {
     const errors = validationResult(req);
@@ -85,7 +67,7 @@ class QuizController {
       return res.status(400).json({ error: "No file uploaded" });
     }
 
-    const filePath = path.join(__dirname, "..", "..", file.path);
+    const filePath = file.path; // Use the multer-provided file path
     const extension = path.extname(file.originalname).toLowerCase();
 
     let fileContent = "";
@@ -132,6 +114,7 @@ class QuizController {
       console.error("Error processing quiz file:", error);
       return res.status(500).json({ error: "Internal server error" });
     } finally {
+      // Cleanup uploaded file
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
       }
@@ -204,12 +187,23 @@ class QuizController {
   }
 
   // Get a quiz by its subject ID
-  static async getQuizBySubject(subjectId) {
-    const db = dbClient.client.db();
-    const quiz = await db
-      .collection("quizzes")
-      .findOne({ subject: new ObjectId(subjectId) });
-    return quiz;
+  static async getQuizBySubject(req, res) {
+    try {
+      const subjectId = req.params.subjectId;
+      const db = dbClient.client.db();
+      const quiz = await db
+        .collection("quizzes")
+        .findOne({ subject: new ObjectId(subjectId) });
+
+      if (!quiz) {
+        return res.status(404).json({ error: "Quiz not found" });
+      }
+
+      res.status(200).json(quiz);
+    } catch (error) {
+      console.error("Error retrieving quiz by subject:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 
   static async getAllQuizzes(req, res) {

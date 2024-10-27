@@ -1,0 +1,7 @@
+.quiz-page { padding: 20px; max-width: 600px; margin: auto; }
+.quiz-header { display: flex; justify-content: space-between; align-items: center; }
+.cancel-button { background: red; color: white; border: none; cursor: pointer; }
+.timer { font-size: 1.2em; }
+.question-section { margin-top: 20px; }
+.options { margin: 10px 0; }
+.navigation button { margin: 0 5px; }

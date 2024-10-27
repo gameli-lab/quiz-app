@@ -5,7 +5,6 @@ import Home from "./landingpage/home";
 import RoleSelection from "./landingpage/role";
 import Signup from "./landingpage/signup";
 import Login from "./landingpage/login";
-import Logout from "./landingpage/logout";
 import AdminDashboard from "./admin/AdminDashboard";
 import TeacherDashboard from "./teacher/TeacherDashboard";
 import StudentDashboard from "./student/StudentDashboard";
@@ -26,16 +25,14 @@ const App = () => {
         <Route element={<ProtectedRoute requiredRole="admin" />}>
           <Route path="admin/dashboard" element={<AdminDashboard />} />
         </Route>
-        <Route path="logout" element={<Logout />} />
+
         <Route element={<ProtectedRoute requiredRole="teacher" />}>
           <Route path="teacher/dashboard" element={<TeacherDashboard />} />
         </Route>
-        <Route path="logout" element={<Logout />} />
 
         <Route element={<ProtectedRoute requiredRole="student" />}>
           <Route path="student/dashboard" element={<StudentDashboard />} />
         </Route>
-        <Route path="logout" element={<Logout />} />
       </Routes>
     </>
   );
@@ -54,8 +51,9 @@ import Login from "./landingpage/login";
 import AdminDashboard from "./admin/AdminDashboard";
 import TeacherDashboard from "./teacher/TeacherDashboard";
 import StudentDashboard from "./student/StudentDashboard";
+import QuizSection from "./student/QuizSection"; // Import the Quiz Section component
+import QuizPage from "./quizpage"; // Import the Quiz Page component
 import ProtectedRoute from "./landingpage/protectedroute";
-//import { handleLogout } from "./landingpage/logout"; // Import the logout function
 
 const App = () => {
   return (
@@ -79,6 +77,14 @@ const App = () => {
 
         <Route element={<ProtectedRoute requiredRole="student" />}>
           <Route path="student/dashboard" element={<StudentDashboard />} />
+        </Route>
+
+        {/* Quiz Routes */}
+        <Route element={<ProtectedRoute requiredRole="student" />}>
+          <Route path="quizzes" element={<QuizSection />} />{" "}
+          {/* Quiz selection page */}
+          <Route path="quiz/:subjectId" element={<QuizPage />} />{" "}
+          {/* Individual quiz page */}
         </Route>
       </Routes>
     </>

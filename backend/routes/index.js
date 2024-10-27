@@ -6,6 +6,7 @@ const AuthController = require("../controllers/AuthController");
 const UserController = require("../controllers/UserController");
 const QuizController = require("../controllers/QuizController");
 const verifyToken = require("../middleware/Token");
+const Quiz = require("../models/quiz");
 const AnalyticsController = require("../controllers/AnalyticsController");
 const SettingsController = require("../controllers/SettingsController");
 const { userValidator, validateUser } = require("../validators/userValidator");
@@ -70,6 +71,7 @@ router.get(
 
 // Quiz management routes
 router.get("/quizzes/:subjectId", verifyToken, QuizController.getQuizBySubject); // Protected route
+router.get("/quizzes/:quizId", verifyToken, Quiz.getQuizById); // Protected route
 router.get("/quizzes", verifyToken, AnalyticsController.getQuizzesAnalytics); // Protected route
 router.post("/results", verifyToken, QuizController.saveResult); // Protected route
 router.post(

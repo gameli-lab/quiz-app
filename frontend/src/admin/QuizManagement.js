@@ -25,6 +25,7 @@ function QuizManagement() {
         }
       });
       const data = await response.json();
+      console.log(data);
       setQuizzes(data);
     } catch (error) {
       console.error("Error fetching quizzes:", error);
@@ -39,6 +40,7 @@ function QuizManagement() {
         }
       });
       const data = await response.json();
+      console.log(data);
       setCategories(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
