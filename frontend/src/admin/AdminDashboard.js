@@ -33,7 +33,7 @@ const AdminDashboard = () => {
   return (
     <div className="admin-layout">
       <Navbar />
-      <div className="admin-dashboard">
+      <div className={`admin-dashboard ${sidebarOpen ? "shifted" : ""}`}>
         <div
           className={`hamburger-icon ${sidebarOpen ? "open" : ""}`}
           onClick={handleSidebarToggle}
@@ -65,9 +65,7 @@ const AdminDashboard = () => {
         </main>
       </div>
 
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

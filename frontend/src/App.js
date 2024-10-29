@@ -51,8 +51,8 @@ import Login from "./landingpage/login";
 import AdminDashboard from "./admin/AdminDashboard";
 import TeacherDashboard from "./teacher/TeacherDashboard";
 import StudentDashboard from "./student/StudentDashboard";
-import QuizSection from "./student/QuizSection"; // Import the Quiz Section component
-import QuizPage from "./quizpage"; // Import the Quiz Page component
+import QuizSection from "./student/QuizSection";
+import QuizPage from "./quizpage";
 import ProtectedRoute from "./landingpage/protectedroute";
 
 const App = () => {
@@ -82,9 +82,7 @@ const App = () => {
         {/* Quiz Routes */}
         <Route element={<ProtectedRoute requiredRole="student" />}>
           <Route path="quizzes" element={<QuizSection />} />{" "}
-          {/* Quiz selection page */}
-          <Route path="quiz/:subjectId" element={<QuizPage />} />{" "}
-          {/* Individual quiz page */}
+          <Route path="quizzes/:subjectId" element={<QuizPage />} />{" "}
         </Route>
       </Routes>
     </>

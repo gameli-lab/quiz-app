@@ -22,17 +22,19 @@ const QuizSection = () => {
   }, []);
 
   // Function to handle start quiz
-  const handleStartQuiz = (subjectId) => {
-    navigate(`../${subjectId}`); // Redirect to a specific quiz page
+  const handleStartQuiz = (quizId) => {
+    navigate(`/quizzes/${quizId}`);
   };
 
   return (
     <div className="quiz-section">
       <ul>
         {quizzes.map((quiz) => (
-          <li key={quiz.id}>
+          <li key={quiz._id}>
             <span>{quiz.title}</span>
-            <button onClick={() => handleStartQuiz(quiz.id)}>Start Quiz</button>
+            <button onClick={() => handleStartQuiz(quiz._id)}>
+              Start Quiz
+            </button>
           </li>
         ))}
       </ul>

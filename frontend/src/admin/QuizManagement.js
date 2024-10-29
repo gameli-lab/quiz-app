@@ -10,6 +10,7 @@ function QuizManagement() {
   const [editingCategory, setEditingCategory] = useState(null);
   const [newQuiz, setNewQuiz] = useState({ title: "", questions: [] });
   const [file, setFile] = useState(null);
+  const [editingQuiz, setEditingQuiz] = useState(null); // New state for editing quizzes
 
   useEffect(() => {
     fetchQuizzes();
@@ -25,7 +26,6 @@ function QuizManagement() {
         }
       });
       const data = await response.json();
-      console.log(data);
       setQuizzes(data);
     } catch (error) {
       console.error("Error fetching quizzes:", error);
@@ -40,7 +40,6 @@ function QuizManagement() {
         }
       });
       const data = await response.json();
-      console.log(data);
       setCategories(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -58,7 +57,10 @@ function QuizManagement() {
   const approveQuiz = async (quizId) => {
     try {
       await fetch(`http://localhost:5000/quizzes/${quizId}/approve`, {
-        method: "PUT"
+        method: "PUT",
+        headers: {
+          "x-token": localStorage.getItem("authToken")
+        }
       });
       fetchQuizzes();
     } catch (error) {
@@ -66,10 +68,27 @@ function QuizManagement() {
     }
   };
 
+  const rejectQuiz = async (quizId) => {
+    try {
+      await fetch(`http://localhost:5000/quizzes/${quizId}/reject`, {
+        method: "PUT",
+        headers: {
+          "x-token": localStorage.getItem("authToken")
+        }
+      });
+      fetchQuizzes();
+    } catch (error) {
+      console.error("Error rejecting quiz:", error);
+    }
+  };
+
   const deleteQuiz = async (quizId) => {
     try {
       await fetch(`http://localhost:5000/quizzes/${quizId}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+          "x-token": localStorage.getItem("authToken")
+        }
       });
       fetchQuizzes();
     } catch (error) {
@@ -83,7 +102,10 @@ function QuizManagement() {
       if (editingCategory) {
         await fetch(`http://localhost:5000/categories/${editingCategory}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "x-token": localStorage.getItem("authToken"),
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify({ name: newCategory })
         });
       } else {
@@ -104,15 +126,30 @@ function QuizManagement() {
   const handleQuizSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch("http://localhost:5000/quizzes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newQuiz)
-      });
+      if (editingQuiz) {
+        await fetch(`http://localhost:5000/quizzes/${editingQuiz}`, {
+          method: "PUT",
+          headers: {
+            "x-token": localStorage.getItem("authToken"),
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(newQuiz)
+        });
+      } else {
+        await fetch("http://localhost:5000/quizzes", {
+          method: "POST",
+          headers: {
+            "x-token": localStorage.getItem("authToken"),
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(newQuiz)
+        });
+      }
       setNewQuiz({ title: "", questions: [] });
+      setEditingQuiz(null); // Reset editing state
       fetchQuizzes();
     } catch (error) {
-      console.error("Error adding quiz:", error);
+      console.error("Error adding/updating quiz:", error);
     }
   };
 
@@ -154,16 +191,18 @@ function QuizManagement() {
     setNewQuiz((prev) => ({ ...prev, questions: updatedQuestions }));
   };
 
-  // Define the editCategory function
   const editCategory = (category) => {
     setNewCategory(category.name);
-    setEditingCategory(category._id); // Set the ID for the category being edited
+    setEditingCategory(category._id);
   };
 
   const deleteCategory = async (categoryId) => {
     try {
       await fetch(`http://localhost:5000/categories/${categoryId}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+          "x-token": localStorage.getItem("authToken")
+        }
       });
       fetchCategories();
     } catch (error) {
@@ -171,13 +210,19 @@ function QuizManagement() {
     }
   };
 
+  // Function to edit a quiz
+  const editQuiz = (quiz) => {
+    setNewQuiz(quiz);
+    setEditingQuiz(quiz._id); // Set the ID for the quiz being edited
+  };
+
   return (
     <div>
       <h2>Quiz Management</h2>
 
-      {/* Add Quiz Form */}
+      {/* Add/Edit Quiz Form */}
       <form onSubmit={handleQuizSubmit}>
-        <h3>Add New Quiz</h3>
+        <h3>{editingQuiz ? "Edit Quiz" : "Add New Quiz"}</h3>
         <input
           type="text"
           placeholder="Quiz Title"
@@ -211,7 +256,9 @@ function QuizManagement() {
         <button type="button" onClick={handleAddQuestion}>
           Add Question
         </button>
-        <button type="submit">Add Quiz</button>
+        <button type="submit">
+          {editingQuiz ? "Update Quiz" : "Add Quiz"}
+        </button>
       </form>
 
       {/* File Upload Form */}
@@ -274,10 +321,15 @@ function QuizManagement() {
               <td>{quiz.status}</td>
               <td>
                 {quiz.status === "pending" && (
-                  <button onClick={() => approveQuiz(quiz._id)}>Approve</button>
+                  <>
+                    <button onClick={() => approveQuiz(quiz._id)}>
+                      Approve
+                    </button>
+                    <button onClick={() => rejectQuiz(quiz._id)}>Reject</button>
+                  </>
                 )}
+                <button onClick={() => editQuiz(quiz)}>Edit</button>
                 <button onClick={() => deleteQuiz(quiz._id)}>Delete</button>
-                <button>Edit</button>
               </td>
             </tr>
           ))}

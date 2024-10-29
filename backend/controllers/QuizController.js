@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const mammoth = require("mammoth");
 const pdfParse = require("pdf-parse");
+const { ObjectId } = require("mongodb");
 
 class QuizController {
   // Middleware for input validation
@@ -95,7 +96,7 @@ class QuizController {
       const categoryName = categoryMatch[1].trim();
 
       // Check if category exists or create a new one
-      let subjectId;
+      var subjectId;
       const category = await Quiz.getCategoryByName(categoryName);
       if (category) {
         subjectId = category._id; // Use existing subjectId
@@ -142,6 +143,14 @@ class QuizController {
     }
   }
 
+  // Get a quiz by its ID
+  static async getQuizById(quizId) {
+    const db = dbClient.client.db();
+    return await db
+      .collection("quizzes")
+      .findOne({ _id: new ObjectId(quizId) });
+  }
+
   static async approveQuiz(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -150,7 +159,7 @@ class QuizController {
 
     const { quizId } = req.params;
     try {
-      const quiz = await Quiz.getQuizById(quizId);
+      const quiz = await QuizController.getQuizById(quizId);
       if (!quiz) {
         return res.status(404).json({ error: "Quiz not found" });
       }

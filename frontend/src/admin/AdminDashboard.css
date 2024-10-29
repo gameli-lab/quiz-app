@@ -1,74 +1,41 @@
-/* General styles */
+/* AdminDashboard.css */
+
 .admin-layout {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
-.admin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background-color: #4a90e2;
-  color: white;
-}
-
-.header-logo img {
-  height: 50px;
-  margin-right: 10px;
-}
-
-.header-buttons {
-  display: flex;
-  align-items: center;
-}
-
-.header-button {
-  margin-left: 20px;
-  padding: 10px 15px;
-  background-color: transparent;
-  color: white;
-  border: 1px solid white;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.header-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
 .admin-dashboard {
   display: flex;
   flex: 1;
   position: relative;
+  transition: margin-left 0.3s ease; /* Smooth transition for content */
 }
 
-/* Sidebar styles */
 .sidebar {
-  width: 250px;
-  background-color: #333;
+  width: 250px; /* Width of the sidebar */
+  background-color: #2c3e50; /* Sidebar background color */
   color: white;
-  position: absolute;
+  padding: 20px;
+  position: fixed; /* Fix sidebar to the left */
   top: 0;
-  left: -250px; /* Hidden by default */
   height: 100%;
-  transition: left 0.3s ease;
-  z-index: 10;
-  padding: 1rem;
+  left: -250px; /* Hidden by default */
+  transition: left 0.3s ease; /* Smooth transition for opening/closing */
+  z-index: 1000; /* Ensure sidebar is above other content */
 }
 
 .sidebar.open {
-  left: 0; /* Show sidebar */
+  left: 0; /* Show sidebar when open */
 }
 
 .sidebar h2 {
-  margin: 0 0 1rem;
+  margin-bottom: 20px;
 }
 
 .sidebar ul {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
 }
 
@@ -79,81 +46,61 @@
 }
 
 .sidebar li:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #34495e; /* Change color on hover */
 }
 
-/* Hamburger icon styles */
 .hamburger-icon {
   width: 30px;
   height: 30px;
-  position: relative;
+  background-color: #3498db; /* Initial hamburger color */
+  position: fixed; /* Fix icon to the top left */
+  top: 20px;
+  left: 20px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  z-index: 1100; /* Ensure icon is above other content */
+}
+
+.hamburger-icon.open {
+  background-color: #e74c3c; /* Color when open */
 }
 
 .hamburger-icon::before,
-.hamburger-icon::after,
-.hamburger-icon div {
+.hamburger-icon::after {
   content: '';
-  background-color: white;
-  height: 4px;
-  width: 100%;
+  width: 20px;
+  height: 2px;
+  background: white;
   position: absolute;
   transition: transform 0.3s ease;
 }
 
 .hamburger-icon::before {
-  top: 0;
+  transform: translateY(0px);
 }
 
 .hamburger-icon::after {
-  bottom: 0;
-}
-
-.hamburger-icon div {
-  top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(0px);
 }
 
 .hamburger-icon.open::before {
-  transform: rotate(45deg);
-  top: 50%;
+  transform: translateY(8px) rotate(45deg); /* Rotate to form X */
 }
 
 .hamburger-icon.open::after {
-  transform: rotate(-45deg);
-  bottom: 50%;
+  transform: translateY(-8px) rotate(-45deg); /* Rotate to form X */
 }
 
-.hamburger-icon.open div {
-  display: none; /* Hide middle line */
-}
-
-/* Main content styles */
 .dashboard-content {
   flex: 1;
-  padding: 1rem;
-  overflow-y: auto; /* Allow scrolling if content overflows */
+  margin-left: 0; /* Initial margin */
+  transition: margin-left 0.3s ease; /* Smooth transition */
 }
 
-/* Footer styles */
-.admin-footer {
-  text-align: center;
-  padding: 1rem;
-  background-color: #4a90e2;
-  color: white;
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 200px;
-  }
-
-  .sidebar.open {
-    left: 0;
-  }
-
-  .header-button {
-    font-size: 14px;
-  }
+.dashboard-content.shifted {
+  margin-left: 250px; /* Shift content when sidebar is open */
 }

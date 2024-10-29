@@ -1,33 +1,3 @@
-/* import React from 'react';
-import { Line } from 'react-chartjs-2';
-import './ProgressChart.css';
-
-const ProgressChart = () => {
-  // Example data, could be fetched from the backend
-  const data = {
-    labels: ['Quiz 1', 'Quiz 2', 'Quiz 3', 'Quiz 4', 'Quiz 5'],
-    datasets: [
-      {
-        label: 'Scores',
-        data: [85, 90, 78, 88, 92],
-        fill: false,
-        backgroundColor: 'blue',
-        borderColor: 'lightblue',
-      },
-    ],
-  };
-
-  return (
-    <div className="progress-chart">
-      <Line data={data} />
-    </div>
-  );
-};
-
-export default ProgressChart;
- */
-
-// src/components/student/ProgressChart.js
 import React, { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
@@ -59,17 +29,22 @@ const ProgressChart = () => {
     labels: [],
     datasets: []
   });
+  const userId = localStorage.getItem("userId"); // Assuming user ID is stored in local storage
 
   useEffect(() => {
     // Fetch progress data for the student from the backend
-    fetchProgressData();
-  }, []);
+    if (userId) {
+      fetchProgressData(userId);
+    } else {
+      console.error("User ID is not available.");
+    }
+  }, [userId]);
 
-  const fetchProgressData = async () => {
+  const fetchProgressData = async (userId) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.get(
-        "http://localhost:5000/student/progress",
+        `http://localhost:5000/progress/${userId}`, // Updated URL to match backend route
         {
           headers: {
             "x-token": token
@@ -77,8 +52,9 @@ const ProgressChart = () => {
         }
       );
 
-      const scores = response.data.scores; // Assuming the response contains an array of quiz scores
-      const labels = response.data.labels; // Assuming the response contains an array of quiz names
+      // Assuming response contains an array of progress data with scores and quiz titles
+      const scores = response.data.map((item) => item.score); // Extracting scores
+      const labels = response.data.map((item) => item.quizId); // Adjust based on how you want to label quizzes
 
       setProgressData({
         labels: labels,

@@ -90,14 +90,14 @@ class Quiz {
       .toArray();
   }
 
-  // Get a quiz by its ID
+  /*   // Get a quiz by its ID
   static async getQuizById(quizId) {
     const db = dbClient.client.db();
     return await db
       .collection("quizzes")
       .findOne({ _id: new ObjectId(quizId) });
   }
-
+ */
   // Reject a quiz by its ID
   static async rejectQuiz(quizId) {
     const db = dbClient.client.db();

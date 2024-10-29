@@ -1,90 +1,107 @@
-// src/components/admin/SystemSettings.js
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './SystemSettings.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const SystemSettings = () => {
-  const [theme, setTheme] = useState('light');
-  const [googleAnalyticsId, setGoogleAnalyticsId] = useState('');
-  const [paymentGatewayKey, setPaymentGatewayKey] = useState('');
-  const [configUpdated, setConfigUpdated] = useState(false);
+const Settings = () => {
+  const [categories, setCategories] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  const fetchCategories = async () => {
+    const token = localStorage.getItem("authToken");
+    const response = await axios.get("http://localhost:5000/categories", {
+      headers: { "x-token": token }
+    });
+    setCategories(response.data);
+  };
+
+  const createCategory = async () => {
+    const token = localStorage.getItem("authToken");
+    await axios.post(
+      "http://localhost:5000/categories",
+      { name: categoryName },
+      {
+        headers: { "x-token": token }
+      }
+    );
+    setCategoryName("");
+    fetchCategories();
+  };
+
+  const updateCategory = async () => {
+    const token = localStorage.getItem("authToken");
+    await axios.put(
+      `http://localhost:5000/categories/${selectedCategoryId}`,
+      { name: categoryName },
+      {
+        headers: { "x-token": token }
+      }
+    );
+    setCategoryName("");
+    setSelectedCategoryId(null);
+    fetchCategories();
+  };
+
+  const deleteCategory = async (id) => {
+    const token = localStorage.getItem("authToken");
+    await axios.delete(`http://localhost:5000/categories/${id}`, {
+      headers: { "x-token": token }
+    });
+    fetchCategories();
+  };
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.body.className = newTheme; // Apply the theme to the body
+  };
 
   useEffect(() => {
-    // Fetch current system settings from backend
-    fetchSettings();
+    fetchCategories();
   }, []);
 
-  const fetchSettings = async () => {
-    try {
-      const response = await axios.get('/admin/settings');
-      const { theme, googleAnalyticsId, paymentGatewayKey } = response.data;
-      setTheme(theme);
-      setGoogleAnalyticsId(googleAnalyticsId);
-      setPaymentGatewayKey(paymentGatewayKey);
-    } catch (error) {
-      console.error('Error fetching system settings:', error);
-    }
-  };
-
-  const handleSaveSettings = async () => {
-    try {
-      const configData = { theme, googleAnalyticsId, paymentGatewayKey };
-      await axios.put('/admin/settings', configData);
-      setConfigUpdated(true);
-    } catch (error) {
-      console.error('Error saving settings:', error);
-    }
-  };
-
-  const generateReport = (format) => {
-    window.location.href = `/admin/reports?format=${format}`;
-  };
-
   return (
-    <div className="system-settings-container">
-      <h2>System Settings</h2>
+    <div>
+      <h1>Settings</h1>
 
-      {configUpdated && <p className="config-success">Settings successfully updated!</p>}
+      <h2>Manage Categories</h2>
+      <input
+        type="text"
+        value={categoryName}
+        onChange={(e) => setCategoryName(e.target.value)}
+        placeholder="Category Name"
+      />
+      {selectedCategoryId ? (
+        <button onClick={updateCategory}>Update Category</button>
+      ) : (
+        <button onClick={createCategory}>Create Category</button>
+      )}
 
-      <div className="settings-section">
-        <h3>Platform Theme</h3>
-        <select value={theme} onChange={(e) => setTheme(e.target.value)}>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
-      </div>
+      <h3>Categories List</h3>
+      <ul>
+        {categories.map((category) => (
+          <li key={category._id}>
+            {category.name}
+            <button
+              onClick={() => {
+                setCategoryName(category.name);
+                setSelectedCategoryId(category._id);
+              }}
+            >
+              Edit
+            </button>
+            <button onClick={() => deleteCategory(category._id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
 
-      <div className="settings-section">
-        <h3>Google Analytics Integration</h3>
-        <input
-          type="text"
-          value={googleAnalyticsId}
-          onChange={(e) => setGoogleAnalyticsId(e.target.value)}
-          placeholder="Enter Google Analytics ID"
-        />
-      </div>
-
-      <div className="settings-section">
-        <h3>Payment Gateway Integration</h3>
-        <input
-          type="text"
-          value={paymentGatewayKey}
-          onChange={(e) => setPaymentGatewayKey(e.target.value)}
-          placeholder="Enter Payment Gateway Key"
-        />
-      </div>
-
-      <button className="save-btn" onClick={handleSaveSettings}>
-        Save Settings
+      <h2>System Theme</h2>
+      <button onClick={toggleTheme}>
+        Switch to {theme === "light" ? "Dark" : "Light"} Theme
       </button>
-
-      <div className="reports-section">
-        <h3>Generate Reports</h3>
-        <button onClick={() => generateReport('csv')}>Download CSV</button>
-        <button onClick={() => generateReport('pdf')}>Download PDF</button>
-      </div>
     </div>
   );
 };
 
-export default SystemSettings;
+export default Settings;

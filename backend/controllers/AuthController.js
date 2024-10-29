@@ -53,7 +53,7 @@ class AuthController {
       await redisclient.set(key, String(user._id));
       await redisclient.expire(key, 86400);
 
-      return res.status(200).json({ token, role });
+      return res.status(200).json({ token, role, userId: user._id.toString() });
     } catch (error) {
       console.error("Error during authentication:", error);
       return res.status(500).json({ error: "Internal Server Error" });

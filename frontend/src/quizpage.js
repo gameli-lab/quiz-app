@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./quizpage.css";
 
 const QuizPage = () => {
-  const { quizId } = useParams(); // Get quizId from URL params
+  const { quizId } = useParams();
   const navigate = useNavigate();
   const [quizData, setQuizData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -12,7 +12,6 @@ const QuizPage = () => {
   const [isQuizStarted, setIsQuizStarted] = useState(false);
 
   useEffect(() => {
-    // Fetch quiz data from backend
     const fetchQuizData = async () => {
       const token = localStorage.getItem("authToken");
       try {
@@ -22,14 +21,18 @@ const QuizPage = () => {
             headers: { "x-token": token }
           }
         );
+        if (!response.ok) {
+          throw new Error("Failed to fetch quiz data");
+        }
         const data = await response.json();
         setQuizData(data);
       } catch (error) {
         console.error("Error fetching quiz data:", error);
+        // navigate("/student/dashboard");
       }
     };
     fetchQuizData();
-  }, [quizId]);
+  }, [quizId, navigate]);
 
   useEffect(() => {
     if (isQuizStarted && timer > 0) {
@@ -46,12 +49,12 @@ const QuizPage = () => {
   const handleQuizEnd = () => {
     stopQuiz();
     alert("Time is up! Quiz ended.");
-    navigate("/dashboard");
+    navigate("/student/dashboard");
   };
 
   const handleCancelQuiz = () => {
     if (window.confirm("Are you sure you want to cancel the quiz?")) {
-      navigate("/dashboard");
+      navigate("/student/dashboard");
     }
   };
 
