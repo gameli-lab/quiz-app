@@ -22,8 +22,8 @@ const QuizSection = () => {
   }, []);
 
   // Function to handle start quiz
-  const handleStartQuiz = (quizId) => {
-    navigate(`/quizzes/${quizId}`);
+  const handleStartQuiz = (id) => {
+    navigate(`/quizzes/${id}`);
   };
 
   return (

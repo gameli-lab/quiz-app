@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./quizpage.css";
 
 const QuizPage = () => {
-  const { quizId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const [quizData, setQuizData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -15,12 +15,9 @@ const QuizPage = () => {
     const fetchQuizData = async () => {
       const token = localStorage.getItem("authToken");
       try {
-        const response = await fetch(
-          `http://localhost:5000/quizzes/${quizId}`,
-          {
-            headers: { "x-token": token }
-          }
-        );
+        const response = await fetch(`http://localhost:5000/quizzes/${id}`, {
+          headers: { "x-token": token }
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch quiz data");
         }
@@ -32,7 +29,7 @@ const QuizPage = () => {
       }
     };
     fetchQuizData();
-  }, [quizId, navigate]);
+  }, [id, navigate]);
 
   useEffect(() => {
     if (isQuizStarted && timer > 0) {
