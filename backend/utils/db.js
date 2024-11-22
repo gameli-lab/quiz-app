@@ -1,14 +1,15 @@
 const { MongoClient } = require('mongodb');
-require('dotenv').config();
+// require('dotenv').config();
 
 class DBClient {
     constructor() {
-        const host = process.env.DB_HOST || 'localhost';
-        const port = process.env.DB_PORT || 27017;
-        const database = process.env.DB_DATABASE || 'quiz-app';
+        const mongoUri = process.env.DB_URI || 'mongodb://localhost:27017/quiz-app';
+        // const host = process.env.DB_HOST || 'localhost';
+        // const port = process.env.DB_PORT || 27017;
+        // const database = process.env.DB_DATABASE || 'quiz-app';
 
-        this.uri = `mongodb://${host}:${port}/${database}`;
-        this.client = new MongoClient(this.uri, {
+        // this.uri = `mongodb://${host}:${port}/${database}`;
+        this.client = new MongoClient(this.mongoUri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             retryWrites: true
