@@ -2,7 +2,7 @@ const redis = require('redis');
 
 class RedisClient {
     constructor() {
-        const redisUri = process.env.REDIS_URI || 'redis://localhost:6379'; // Use fallback URI if no REDIS_URI provided
+        const redisUri = 'redis://red-csgvv53tq21c73e0o0gg:6379' || 'redis://localhost:6379'; // Use fallback URI if no REDIS_URI provided
         this.client = redis.createClient(redisUri);
 
         // Listen for connection errors

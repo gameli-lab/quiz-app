@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 
 class DBClient {
     constructor() {
-        const mongoUri = process.env.DB_URI || 'mongodb://localhost:27017/quiz-app';
+        this.mongoUri = 'mongodb+srv://btorfu:h5jAyAq1QZC9SVNP@quiz-master.vmotw.mongodb.net/?retryWrites=true&w=majority&appName=quiz-master' //|| 'mongodb://localhost:27017/quiz-app';
         // const host = process.env.DB_HOST || 'localhost';
         // const port = process.env.DB_PORT || 27017;
         // const database = process.env.DB_DATABASE || 'quiz-app';
